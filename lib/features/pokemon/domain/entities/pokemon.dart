@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_stat.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_type.dart';
 
@@ -16,6 +17,9 @@ class Pokemon extends Equatable {
   /// The weight of this Pokemon in hectograms.
   final int weight;
 
+  /// A set of sprites used to depict this Pokemon.
+  final PokemonSprites sprites;
+
   /// A list of base stat values for this Pokemon.
   final List<PokemonStat> stats;
 
@@ -27,10 +31,11 @@ class Pokemon extends Equatable {
     required this.name,
     required this.height,
     required this.weight,
+    required this.sprites,
     required this.stats,
     required this.types,
   });
 
   @override
-  List<Object> get props => [id, name, height, weight, stats, types];
+  List<Object> get props => [id, name, height, weight, sprites, stats, types];
 }

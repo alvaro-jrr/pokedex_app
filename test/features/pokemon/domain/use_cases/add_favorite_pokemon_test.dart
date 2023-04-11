@@ -3,7 +3,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'package:pokedex_app/features/pokemon/domain/entities/home.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
 
@@ -28,6 +31,11 @@ void main() {
     weight: 1,
     stats: [],
     types: [],
+    sprites: PokemonSprites(
+      other: OtherPokemonSprites(
+        home: Home(frontDefault: ''),
+      ),
+    ),
   );
 
   test(
