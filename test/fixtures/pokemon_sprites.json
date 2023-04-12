@@ -1,0 +1,26 @@
+{
+	"back_default": "Test",
+	"back_female": null,
+	"back_shiny": "Test",
+	"back_shiny_female": null,
+	"front_default": "Test",
+	"front_female": null,
+	"front_shiny": "Test",
+	"front_shiny_female": null,
+	"other": {
+		"dream_world": {
+			"front_default": "Test",
+			"front_female": null
+		},
+		"home": {
+			"front_default": "Test",
+			"front_female": null,
+			"front_shiny": "Test",
+			"front_shiny_female": null
+		},
+		"official-artwork": {
+			"front_default": "Test",
+			"front_shiny": "Test"
+		}
+	}
+}

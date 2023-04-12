@@ -1,0 +1,16 @@
+{
+	"dream_world": {
+		"front_default": "Test",
+		"front_female": null
+	},
+	"home": {
+		"front_default": "Test",
+		"front_female": null,
+		"front_shiny": "Test",
+		"front_shiny_female": null
+	},
+	"official-artwork": {
+		"front_default": "Test",
+		"front_shiny": "Test"
+	}
+}

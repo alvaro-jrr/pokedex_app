@@ -7,13 +7,13 @@ class PokemonType extends Equatable {
   final int slot;
 
   /// The type the referenced Form has.
-  final List<Type> types;
+  final Type type;
 
   const PokemonType({
     required this.slot,
-    required this.types,
+    required this.type,
   });
 
   @override
-  List<Object> get props => [slot, types];
+  List<Object> get props => [slot, type];
 }
