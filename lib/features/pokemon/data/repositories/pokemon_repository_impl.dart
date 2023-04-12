@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
 
+import 'package:pokedex_app/core/error/exceptions.dart';
 import 'package:pokedex_app/core/error/failures.dart';
 import 'package:pokedex_app/core/network/network_info.dart';
 import 'package:pokedex_app/features/pokemon/data/data_sources/pokemon_local_data_source.dart';
 import 'package:pokedex_app/features/pokemon/data/data_sources/pokemon_remote_data_source.dart';
+import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart';
 
@@ -19,32 +21,66 @@ class PokemonRepositoryImpl implements PokemonRepository {
   });
 
   @override
-  Future<Either<Failure, void>> addFavoritePokemon(Pokemon pokemon) {
-    // TODO: implement addFavoritePokemon
-    throw UnimplementedError();
+  Future<Either<Failure, Pokemon>> getConcretePokemon(String query) async {
+    final isConnected = await networkInfo.isConnected;
+
+    if (!isConnected) return Left(ServerFailure());
+
+    try {
+      final pokemon = await remoteDataSource.getConcretePokemon(query);
+      return Right(pokemon);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Pokemon>> getConcretePokemon(String query) {
-    // TODO: implement getConcretePokemon
-    throw UnimplementedError();
+  Future<Either<Failure, Pokemon>> getFavoritePokemon(int id) async {
+    try {
+      final pokemon = await localDataSource.getFavoritePokemon(id);
+      return Right(pokemon);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, Pokemon>> getFavoritePokemon(int id) {
-    // TODO: implement getFavoritePokemon
-    throw UnimplementedError();
+  Future<Either<Failure, List<Pokemon>>> getFavoritePokemons() async {
+    try {
+      final pokemon = await localDataSource.getFavoritePokemons();
+      return Right(pokemon);
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, List<Pokemon>>> getFavoritePokemons() {
-    // TODO: implement getFavoritePokemons
-    throw UnimplementedError();
+  Future<Either<Failure, void>> addFavoritePokemon(Pokemon pokemon) async {
+    final pokemonModel = PokemonModel(
+      id: pokemon.id,
+      name: pokemon.name,
+      height: pokemon.height,
+      weight: pokemon.weight,
+      sprites: pokemon.sprites,
+      stats: pokemon.stats,
+      types: pokemon.types,
+    );
+
+    try {
+      return Right(
+        await localDataSource.addFavoritePokemon(pokemonModel),
+      );
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 
   @override
-  Future<Either<Failure, void>> removeFavoritePokemon(int id) {
-    // TODO: implement removeFavoritePokemon
-    throw UnimplementedError();
+  Future<Either<Failure, void>> removeFavoritePokemon(int id) async {
+    try {
+      return Right(await localDataSource.removeFavoritePokemon(id));
+    } on CacheException {
+      return Left(CacheFailure());
+    }
   }
 }

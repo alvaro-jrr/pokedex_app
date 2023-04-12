@@ -8,9 +8,13 @@ abstract class PokemonLocalDataSource {
   Future<PokemonModel> getFavoritePokemon(int id);
 
   /// Gets the [PokemonModel] favorites list.
+  ///
+  /// Throws [CacheException] on any error.
   Future<List<PokemonModel>> getFavoritePokemons();
 
   /// Adds the [PokemonModel] into the favorites list.
+  ///
+  /// Throws [CacheException] on any error.
   Future<void> addFavoritePokemon(PokemonModel pokemon);
 
   /// Removes the [PokemonModel] from the favorites list with the [id].
