@@ -22,8 +22,6 @@ void main() {
     useCase = AddFavoritePokemon(mockPokemonRepository);
   });
 
-  const tBool = true;
-
   const tPokemon = Pokemon(
     id: 1,
     name: 'Test',
@@ -43,7 +41,7 @@ void main() {
     () async {
       // arrange
       when(mockPokemonRepository.addFavoritePokemon(any))
-          .thenAnswer((_) async => const Right(tBool));
+          .thenAnswer((_) async => const Right(null));
 
       // act
       final result = await useCase(
@@ -53,7 +51,7 @@ void main() {
       );
 
       // assert
-      expect(result, const Right(tBool));
+      expect(result, const Right(null));
       verify(mockPokemonRepository.addFavoritePokemon(tPokemon));
       verifyNoMoreInteractions(mockPokemonRepository);
     },

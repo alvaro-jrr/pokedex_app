@@ -117,15 +117,15 @@ class MockPokemonRepository extends _i1.Mock implements _i3.PokemonRepository {
             )),
           ) as _i4.Future<_i2.Either<_i5.Failure, List<_i6.Pokemon>>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, bool>> addFavoritePokemon(
+  _i4.Future<_i2.Either<_i5.Failure, void>> addFavoritePokemon(
           _i6.Pokemon? pokemon) =>
       (super.noSuchMethod(
         Invocation.method(
           #addFavoritePokemon,
           [pokemon],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, bool>>.value(
-            _FakeEither_0<_i5.Failure, bool>(
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
+            _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #addFavoritePokemon,
@@ -133,24 +133,24 @@ class MockPokemonRepository extends _i1.Mock implements _i3.PokemonRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i4.Future<_i2.Either<_i5.Failure, bool>>.value(
-                _FakeEither_0<_i5.Failure, bool>(
+            _i4.Future<_i2.Either<_i5.Failure, void>>.value(
+                _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #addFavoritePokemon,
             [pokemon],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
   @override
-  _i4.Future<_i2.Either<_i5.Failure, bool>> removeFavoritePokemon(int? id) =>
+  _i4.Future<_i2.Either<_i5.Failure, void>> removeFavoritePokemon(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
           #removeFavoritePokemon,
           [id],
         ),
-        returnValue: _i4.Future<_i2.Either<_i5.Failure, bool>>.value(
-            _FakeEither_0<_i5.Failure, bool>(
+        returnValue: _i4.Future<_i2.Either<_i5.Failure, void>>.value(
+            _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #removeFavoritePokemon,
@@ -158,13 +158,13 @@ class MockPokemonRepository extends _i1.Mock implements _i3.PokemonRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i4.Future<_i2.Either<_i5.Failure, bool>>.value(
-                _FakeEither_0<_i5.Failure, bool>(
+            _i4.Future<_i2.Either<_i5.Failure, void>>.value(
+                _FakeEither_0<_i5.Failure, void>(
           this,
           Invocation.method(
             #removeFavoritePokemon,
             [id],
           ),
         )),
-      ) as _i4.Future<_i2.Either<_i5.Failure, bool>>);
+      ) as _i4.Future<_i2.Either<_i5.Failure, void>>);
 }

@@ -18,7 +18,6 @@ void main() {
     useCase = RemoveFavoritePokemon(mockPokemonRepository);
   });
 
-  const tBool = true;
   const tId = 1;
 
   test(
@@ -26,13 +25,13 @@ void main() {
     () async {
       // arrange
       when(mockPokemonRepository.removeFavoritePokemon(any))
-          .thenAnswer((_) async => const Right(tBool));
+          .thenAnswer((_) async => const Right(null));
 
       // act
       final result = await useCase(const RemoveFavoritePokemonParams(id: tId));
 
       // assert
-      expect(result, const Right(tBool));
+      expect(result, const Right(null));
       verify(mockPokemonRepository.removeFavoritePokemon(tId));
       verifyNoMoreInteractions(mockPokemonRepository);
     },
