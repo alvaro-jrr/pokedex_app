@@ -44,6 +44,16 @@ void main() {
     ],
   );
 
+  void setUpMockHttpClientSuccess200() {
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response(fixture('pokemon.json'), 200));
+  }
+
+  void setUpMockHttpClientError404() {
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('Not Found', 404));
+  }
+
   group('getConcretePokemon', () {
     const tQuery = 'Test';
 
@@ -52,8 +62,7 @@ void main() {
       being the endpoint and with application/json header''',
       () async {
         // arrange
-        when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('pokemon.json'), 200));
+        setUpMockHttpClientSuccess200();
 
         // act
         dataSourceImpl.getConcretePokemon(tQuery);
@@ -77,8 +86,7 @@ void main() {
       'should return PokemonModel when status code is 200 (success)',
       () async {
         // arrange
-        when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-            (_) async => http.Response(fixture('pokemon.json'), 200));
+        setUpMockHttpClientSuccess200();
 
         // act
         final result = await dataSourceImpl.getConcretePokemon(tQuery);
@@ -92,8 +100,7 @@ void main() {
       'should throw a ServerException when the status code is 404 or other',
       () async {
         // arrange
-        when(mockClient.get(any, headers: anyNamed('headers')))
-            .thenAnswer((_) async => http.Response('Not Found', 404));
+        setUpMockHttpClientError404();
 
         // act
         final call = dataSourceImpl.getConcretePokemon;
