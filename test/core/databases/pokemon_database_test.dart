@@ -148,4 +148,6 @@ Future main() async {
       expect(result, 1);
     },
   );
+
+  await db.close();
 }
