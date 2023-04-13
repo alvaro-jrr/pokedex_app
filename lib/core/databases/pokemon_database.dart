@@ -31,7 +31,7 @@ class PokemonDatabase {
     await db.execute('''
       CREATE TABLE Pokemon(
         id INTEGER PRIMARY KEY NOT NULL,
-        data TEXT NOT NULL,
+        data TEXT NOT NULL
       )
     ''');
   }
@@ -68,7 +68,11 @@ class PokemonDatabase {
   Future<int> deletePokemon(int id) async {
     final db = await database;
 
-    return await db.delete('Pokemon', where: 'id = ?', whereArgs: [id]);
+    return await db.delete(
+      'Pokemon',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 
   /// Gets a [PokemonModel] list.
@@ -100,7 +104,7 @@ class PokemonDatabase {
 
     if (pokemonJson.isEmpty) return null;
 
-    final Map<String, dynamic> pokemon = Map.from(pokemonJson.first);
-    return PokemonModel.fromJson(pokemon['data']);
+    final pokemon = Map.from(pokemonJson.first)['data'];
+    return PokemonModel.fromJson(json.decode(pokemon));
   }
 }

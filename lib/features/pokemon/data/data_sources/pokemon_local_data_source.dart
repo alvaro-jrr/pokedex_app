@@ -1,5 +1,3 @@
-import 'package:sqflite/sqflite.dart';
-
 import 'package:pokedex_app/core/databases/pokemon_database.dart';
 import 'package:pokedex_app/core/error/exceptions.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
