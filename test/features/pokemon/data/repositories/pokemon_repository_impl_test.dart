@@ -10,7 +10,7 @@ import 'package:pokedex_app/features/pokemon/data/data_sources/pokemon_local_dat
 import 'package:pokedex_app/features/pokemon/data/data_sources/pokemon_remote_data_source.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
 import 'package:pokedex_app/features/pokemon/data/repositories/pokemon_repository_impl.dart';
-import 'package:pokedex_app/features/pokemon/domain/entities/home_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
@@ -52,7 +52,9 @@ void main() {
     height: 1,
     weight: 1,
     sprites: PokemonSprites(
-      other: OtherPokemonSprites(home: HomeSprites(frontDefault: 'Test')),
+      other: OtherPokemonSprites(
+        officialArtwork: OfficialArtworkSprites(frontDefault: 'Test'),
+      ),
     ),
     stats: [
       PokemonStat(baseStat: 1, stat: Stat(name: 'Test')),

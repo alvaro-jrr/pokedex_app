@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class HomeSprites extends Equatable {
+class OfficialArtworkSprites extends Equatable {
   final String frontDefault;
 
-  const HomeSprites({required this.frontDefault});
+  const OfficialArtworkSprites({required this.frontDefault});
 
   @override
   List<Object> get props => [frontDefault];

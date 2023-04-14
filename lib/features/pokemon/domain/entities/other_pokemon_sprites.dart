@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:pokedex_app/features/pokemon/domain/entities/home_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 
 class OtherPokemonSprites extends Equatable {
-  final HomeSprites home;
+  final OfficialArtworkSprites officialArtwork;
 
   const OtherPokemonSprites({
-    required this.home,
+    required this.officialArtwork,
   });
 
   @override
-  List<Object> get props => [home];
+  List<Object> get props => [officialArtwork];
 }

@@ -18,6 +18,8 @@ class PokemonSpritesModel extends PokemonSprites {
 
   @override
   OtherPokemonSpritesModel get other {
-    return OtherPokemonSpritesModel(home: super.other.home);
+    return OtherPokemonSpritesModel(
+      officialArtwork: super.other.officialArtwork,
+    );
   }
 }

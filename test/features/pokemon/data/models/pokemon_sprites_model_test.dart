@@ -4,14 +4,14 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:pokedex_app/features/pokemon/data/models/other_pokemon_sprites_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_sprites_model.dart';
-import 'package:pokedex_app/features/pokemon/domain/entities/home_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   const tOtherPokemonSpritesModel = OtherPokemonSpritesModel(
-    home: HomeSprites(frontDefault: 'Test'),
+    officialArtwork: OfficialArtworkSprites(frontDefault: 'Test'),
   );
 
   const tPokemonSpritesModel = PokemonSpritesModel(

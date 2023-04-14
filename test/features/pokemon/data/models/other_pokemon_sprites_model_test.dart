@@ -2,17 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:pokedex_app/features/pokemon/data/models/home_sprites_model.dart';
+import 'package:pokedex_app/features/pokemon/data/models/official_artwork_sprites_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/other_pokemon_sprites_model.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  const tHomeSpritesModel = HomeSpritesModel(frontDefault: 'Test');
+  const tOfficialArtworkSpritesModel = OfficialArtworkSpritesModel(
+    frontDefault: 'Test',
+  );
 
   const tOtherPokemonSpritesModel = OtherPokemonSpritesModel(
-    home: tHomeSpritesModel,
+    officialArtwork: tOfficialArtworkSpritesModel,
   );
 
   test(
@@ -23,12 +25,15 @@ void main() {
     },
   );
 
-  group('home', () {
+  group('officialArtwork', () {
     test(
-      'should return a HomeSpritesModel',
+      'should return a OfficialArtworkSpritesModel',
       () async {
         // assert
-        expect(tOtherPokemonSpritesModel.home, isA<HomeSpritesModel>());
+        expect(
+          tOtherPokemonSpritesModel.officialArtwork,
+          isA<OfficialArtworkSpritesModel>(),
+        );
       },
     );
   });
@@ -59,7 +64,7 @@ void main() {
 
         // assert
         final expectedMap = {
-          "home": tHomeSpritesModel.toJson(),
+          "official-artwork": tOfficialArtworkSpritesModel.toJson(),
         };
 
         expect(result, expectedMap);

@@ -6,7 +6,7 @@ import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_sprites_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_stat_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_type_model.dart';
-import 'package:pokedex_app/features/pokemon/domain/entities/home_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/stat.dart';
@@ -16,7 +16,9 @@ import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
   const tPokemonSpritesModel = PokemonSpritesModel(
-    other: OtherPokemonSprites(home: HomeSprites(frontDefault: 'Test')),
+    other: OtherPokemonSprites(
+      officialArtwork: OfficialArtworkSprites(frontDefault: 'Test'),
+    ),
   );
 
   const tStatModels = [

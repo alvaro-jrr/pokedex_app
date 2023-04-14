@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'package:pokedex_app/features/pokemon/domain/entities/home_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
@@ -31,7 +31,7 @@ void main() {
     types: [],
     sprites: PokemonSprites(
       other: OtherPokemonSprites(
-        home: HomeSprites(frontDefault: ''),
+        officialArtwork: OfficialArtworkSprites(frontDefault: ''),
       ),
     ),
     isFavorite: true,
