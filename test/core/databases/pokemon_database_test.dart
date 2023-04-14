@@ -132,6 +132,28 @@ Future main() async {
         expect(pokemonModel, isA<PokemonModel>());
       },
     );
+
+    test(
+      'should get a valid list of pokemon',
+      () async {
+        // act
+        final result = await db.query('Pokemon', columns: ['data']);
+
+        final pokemonList = result
+            .map(
+              (pokemonJson) => PokemonModel.fromJson(
+                json.decode(
+                  Map.from(pokemonJson)['data'],
+                ),
+              ),
+            )
+            .toList();
+
+        // assert
+        expect(pokemonList, isA<List<PokemonModel>>());
+        expect(pokemonList.length, result.length);
+      },
+    );
   });
 
   test(
@@ -148,6 +170,4 @@ Future main() async {
       expect(result, 1);
     },
   );
-
-  await db.close();
 }

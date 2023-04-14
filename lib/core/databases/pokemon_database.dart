@@ -78,18 +78,15 @@ class PokemonDatabase {
   /// Gets a [PokemonModel] list.
   Future<List<PokemonModel>> getPokemons() async {
     final db = await database;
-    final List<PokemonModel> pokemons = [];
+    final pokemonsJson = await db.query('Pokemon', columns: ['data']);
 
-    final pokemonsJson = await db.query('Pokemon', columns: ['id']);
-
-    for (final pokemonJson in pokemonsJson) {
-      final Map<String, int> pokemonMap = Map.from(pokemonJson);
-      final pokemon = await getPokemonById(pokemonMap['id']!);
-
-      if (pokemon != null) pokemons.add(pokemon);
-    }
-
-    return pokemons;
+    return pokemonsJson
+        .map(
+          (pokemonJson) => PokemonModel.fromJson(
+            json.decode(Map.from(pokemonJson)['data']),
+          ),
+        )
+        .toList();
   }
 
   /// Gets the pokemon with [id].
