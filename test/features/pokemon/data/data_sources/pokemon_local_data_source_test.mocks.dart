@@ -109,4 +109,14 @@ class MockPokemonDatabase extends _i1.Mock implements _i3.PokemonDatabase {
         returnValue: _i4.Future<_i5.PokemonModel?>.value(),
         returnValueForMissingStub: _i4.Future<_i5.PokemonModel?>.value(),
       ) as _i4.Future<_i5.PokemonModel?>);
+  @override
+  _i4.Future<_i5.PokemonModel?> getPokemonByName(String? name) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getPokemonByName,
+          [name],
+        ),
+        returnValue: _i4.Future<_i5.PokemonModel?>.value(),
+        returnValueForMissingStub: _i4.Future<_i5.PokemonModel?>.value(),
+      ) as _i4.Future<_i5.PokemonModel?>);
 }

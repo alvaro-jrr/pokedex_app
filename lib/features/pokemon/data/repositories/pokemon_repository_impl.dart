@@ -22,22 +22,34 @@ class PokemonRepositoryImpl implements PokemonRepository {
 
   @override
   Future<Either<Failure, Pokemon>> getConcretePokemon(String query) async {
-    final isConnected = await networkInfo.isConnected;
-
-    if (!isConnected) return Left(ServerFailure());
-
     try {
-      final pokemon = await remoteDataSource.getConcretePokemon(query);
-      return Right(pokemon);
-    } on ServerException {
-      return Left(ServerFailure());
+      final id = int.tryParse(query);
+
+      // Search locally the pokemon by id.
+      if (id != null) {
+        return Right(await localDataSource.getFavoritePokemonById(id));
+      }
+
+      // Search locally the pokemon by name.
+      return Right(await localDataSource.getFavoritePokemonByName(query));
+    } on CacheException {
+      final isConnected = await networkInfo.isConnected;
+
+      if (!isConnected) return Left(ServerFailure());
+
+      // Search remotely the pokemon.
+      try {
+        return Right(await remoteDataSource.getConcretePokemon(query));
+      } on ServerException {
+        return Left(ServerFailure());
+      }
     }
   }
 
   @override
   Future<Either<Failure, Pokemon>> getFavoritePokemon(int id) async {
     try {
-      final pokemon = await localDataSource.getFavoritePokemon(id);
+      final pokemon = await localDataSource.getFavoritePokemonById(id);
       return Right(pokemon);
     } on CacheException {
       return Left(CacheFailure());

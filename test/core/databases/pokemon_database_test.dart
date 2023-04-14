@@ -54,6 +54,7 @@ Future main() async {
       await db.execute('''
         CREATE TABLE Pokemon(
           id INTEGER PRIMARY KEY NOT NULL,
+          name TEXT UNIQUE,
           data TEXT NOT NULL
         )
       ''');
@@ -77,6 +78,7 @@ Future main() async {
         'Pokemon',
         {
           'id': tPokemonModel.id,
+          'name': tPokemonModel.name,
           'data': json.encode(tPokemonModel.toJson()),
         },
       );
@@ -86,6 +88,7 @@ Future main() async {
       // assert
       expect(result.first, {
         'id': tPokemonModel.id,
+        'name': tPokemonModel.name,
         'data': json.encode(tPokemonModel.toJson()),
       });
     },
@@ -155,6 +158,46 @@ Future main() async {
       },
     );
   });
+
+  test(
+    'should find the pokemon by id',
+    () async {
+      // act
+      final result = await db.query(
+        'Pokemon',
+        columns: ['data'],
+        where: 'id = ?',
+        whereArgs: [tPokemonModel.id],
+      );
+
+      final pokemonModel = PokemonModel.fromJson(
+        json.decode(Map.from(result.first)['data']),
+      );
+
+      // assert
+      expect(pokemonModel, tPokemonModel);
+    },
+  );
+
+  test(
+    'should find the pokemon by name',
+    () async {
+      // act
+      final result = await db.query(
+        'Pokemon',
+        columns: ['data'],
+        where: 'name = ?',
+        whereArgs: [tPokemonModel.name],
+      );
+
+      final pokemonModel = PokemonModel.fromJson(
+        json.decode(Map.from(result.first)['data']),
+      );
+
+      // assert
+      expect(pokemonModel, tPokemonModel);
+    },
+  );
 
   test(
     'should delete the pokemon with the id',

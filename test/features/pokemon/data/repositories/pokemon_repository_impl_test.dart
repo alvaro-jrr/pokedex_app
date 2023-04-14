@@ -66,75 +66,118 @@ void main() {
 
   group('getConcretePokemon', () {
     const tQuery = 'Test';
+    const tId = 1;
+    const tIdQuery = '1';
 
     test(
-      'should check if the device is online',
+      'should search the pokemon locally first',
       () async {
         // arrange
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+        when(mockPokemonLocalDataSource.getFavoritePokemonByName(any))
+            .thenAnswer((_) async => tPokemonModel);
 
         // act
-        repository.getConcretePokemon(tQuery);
+        final result = await repository.getConcretePokemon(tQuery);
 
         // assert
-        verify(mockNetworkInfo.isConnected);
+        expect(result, const Right(tPokemonModel));
+        verify(mockPokemonLocalDataSource.getFavoritePokemonByName(tQuery));
+        verifyZeroInteractions(mockPokemonRemoteDataSource);
       },
     );
 
-    group('device is online', () {
+    test(
+      'should call proper method to get pokemon locally according to query type',
+      () async {
+        // arrange
+        when(mockPokemonLocalDataSource.getFavoritePokemonById(any))
+            .thenAnswer((_) async => tPokemonModel);
+
+        // act
+        final result = await repository.getConcretePokemon(tIdQuery);
+
+        // assert
+        expect(result, const Right(tPokemonModel));
+        verify(mockPokemonLocalDataSource.getFavoritePokemonById(tId));
+        verifyZeroInteractions(mockPokemonRemoteDataSource);
+      },
+    );
+
+    group('pokemon not found locally', () {
       setUp(() {
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+        when(mockPokemonLocalDataSource.getFavoritePokemonByName(any))
+            .thenThrow(CacheException());
       });
 
       test(
-        'should return remote data when the call to remote data source is successful',
+        'should check if the device is online',
         () async {
           // arrange
-          when(mockPokemonRemoteDataSource.getConcretePokemon(any))
-              .thenAnswer((_) async => tPokemonModel);
+          when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
 
           // act
-          final result = await repository.getConcretePokemon(tQuery);
+          repository.getConcretePokemon(tQuery);
 
           // assert
-          verify(mockPokemonRemoteDataSource.getConcretePokemon(tQuery));
-          expect(result, const Right(tPokemon));
+          verify(mockNetworkInfo.isConnected);
         },
       );
 
-      test(
-        'should return ServerFailure when the call to remote data source is unsuccessful',
-        () async {
-          // arrange
-          when(mockPokemonRemoteDataSource.getConcretePokemon(any))
-              .thenThrow(ServerException());
+      group('device is online', () {
+        setUp(() {
+          when(mockNetworkInfo.isConnected).thenAnswer((_) async => true);
+        });
 
-          // act
-          final result = await repository.getConcretePokemon(tQuery);
+        test(
+          'should return remote data when the call to remote data source is successful',
+          () async {
+            // arrange
+            when(mockPokemonRemoteDataSource.getConcretePokemon(any))
+                .thenAnswer((_) async => tPokemonModel);
 
-          // assert
-          verify(mockPokemonRemoteDataSource.getConcretePokemon(tQuery));
-          expect(result, Left(ServerFailure()));
-        },
-      );
-    });
+            // act
+            final result = await repository.getConcretePokemon(tQuery);
 
-    group('device is offline', () {
-      setUp(() {
-        when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+            // assert
+            verify(mockPokemonRemoteDataSource.getConcretePokemon(tQuery));
+            expect(result, const Right(tPokemon));
+          },
+        );
+
+        test(
+          'should return ServerFailure when the call to remote data source is unsuccessful',
+          () async {
+            // arrange
+            when(mockPokemonRemoteDataSource.getConcretePokemon(any))
+                .thenThrow(ServerException());
+
+            // act
+            final result = await repository.getConcretePokemon(tQuery);
+
+            // assert
+            verify(mockPokemonRemoteDataSource.getConcretePokemon(tQuery));
+            expect(result, Left(ServerFailure()));
+          },
+        );
       });
 
-      test(
-        'should return ServerFailure when device is offline',
-        () async {
-          // act
-          final result = await repository.getConcretePokemon(tQuery);
+      group('device is offline', () {
+        setUp(() {
+          when(mockNetworkInfo.isConnected).thenAnswer((_) async => false);
+        });
 
-          // assert
-          verifyZeroInteractions(mockPokemonRemoteDataSource);
-          expect(result, Left(ServerFailure()));
-        },
-      );
+        test(
+          'should return ServerFailure when device is offline',
+          () async {
+            // act
+            final result = await repository.getConcretePokemon(tQuery);
+
+            // assert
+            verifyZeroInteractions(mockPokemonRemoteDataSource);
+            expect(result, Left(ServerFailure()));
+          },
+        );
+      });
     });
   });
 
@@ -145,14 +188,14 @@ void main() {
       'should return pokemon when id is present',
       () async {
         // arrange
-        when(mockPokemonLocalDataSource.getFavoritePokemon(any))
+        when(mockPokemonLocalDataSource.getFavoritePokemonById(any))
             .thenAnswer((_) async => tPokemonModel);
 
         // act
         final result = await repository.getFavoritePokemon(tId);
 
         // assert
-        verify(mockPokemonLocalDataSource.getFavoritePokemon(tId));
+        verify(mockPokemonLocalDataSource.getFavoritePokemonById(tId));
         expect(result, const Right(tPokemon));
       },
     );
@@ -161,14 +204,14 @@ void main() {
       'should return CacheFailure when pokemon id is not found',
       () async {
         // arrange
-        when(mockPokemonLocalDataSource.getFavoritePokemon(any))
+        when(mockPokemonLocalDataSource.getFavoritePokemonById(any))
             .thenThrow(CacheException());
 
         // act
         final result = await repository.getFavoritePokemon(tId);
 
         // assert
-        verify(mockPokemonLocalDataSource.getFavoritePokemon(tId));
+        verify(mockPokemonLocalDataSource.getFavoritePokemonById(tId));
         expect(result, Left(CacheFailure()));
       },
     );

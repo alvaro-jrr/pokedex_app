@@ -6,7 +6,12 @@ abstract class PokemonLocalDataSource {
   /// Gets the favorite [PokemonModel] that matches the [id].
   ///
   /// Throws [CacheException] if Pokemon with [id] not found.
-  Future<PokemonModel> getFavoritePokemon(int id);
+  Future<PokemonModel> getFavoritePokemonById(int id);
+
+  /// Gets the favorite [PokemonModel] that matches the [name].
+  ///
+  /// Throws [CacheException] if Pokemon with [name] not found.
+  Future<PokemonModel> getFavoritePokemonByName(String name);
 
   /// Gets the [PokemonModel] favorites list.
   ///
@@ -30,7 +35,7 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   PokemonLocalDataSourceImpl({required this.database});
 
   @override
-  Future<PokemonModel> getFavoritePokemon(int id) async {
+  Future<PokemonModel> getFavoritePokemonById(int id) async {
     try {
       final pokemon = await database.getPokemonById(id);
 
@@ -40,6 +45,12 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
     } catch (error) {
       throw CacheException();
     }
+  }
+
+  @override
+  Future<PokemonModel> getFavoritePokemonByName(String name) {
+    // TODO: implement getFavoritePokemonByName
+    throw UnimplementedError();
   }
 
   @override

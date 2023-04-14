@@ -31,6 +31,7 @@ class PokemonDatabase {
     await db.execute('''
       CREATE TABLE Pokemon(
         id INTEGER PRIMARY KEY NOT NULL,
+        name TEXT UNIQUE,
         data TEXT NOT NULL
       )
     ''');
@@ -80,28 +81,40 @@ class PokemonDatabase {
     final db = await database;
     final pokemonsJson = await db.query('Pokemon', columns: ['data']);
 
-    return pokemonsJson
-        .map(
-          (pokemonJson) => PokemonModel.fromJson(
-            json.decode(Map.from(pokemonJson)['data']),
-          ),
-        )
-        .toList();
+    return pokemonsJson.map((pokemonJson) => _getPokemon(pokemonJson)).toList();
   }
 
   /// Gets the pokemon with [id].
   Future<PokemonModel?> getPokemonById(int id) async {
     final db = await database;
 
-    final pokemonJson = await db.query(
+    final jsonResponse = await db.query(
       'Pokemon',
       where: 'id = ?',
       whereArgs: [id],
     );
 
-    if (pokemonJson.isEmpty) return null;
+    return jsonResponse.isEmpty ? null : _getPokemon(jsonResponse.first);
+  }
 
-    final pokemon = Map.from(pokemonJson.first)['data'];
-    return PokemonModel.fromJson(json.decode(pokemon));
+  /// Gets the pokemon with [name].
+  Future<PokemonModel?> getPokemonByName(String name) async {
+    final db = await database;
+
+    final jsonResponse = await db.query(
+      'Pokemon',
+      where: 'name = ?',
+      whereArgs: [name],
+    );
+
+    return jsonResponse.isEmpty ? null : _getPokemon(jsonResponse.first);
+  }
+
+  PokemonModel _getPokemon(Map<String, Object?> jsonResponse) {
+    return PokemonModel.fromJson(
+      json.decode(
+        Map.from(jsonResponse)['data'],
+      ),
+    );
   }
 }

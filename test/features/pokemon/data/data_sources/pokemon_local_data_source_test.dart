@@ -56,7 +56,7 @@ void main() {
             .thenAnswer((_) async => tPokemonModel);
 
         // act
-        final result = await dataSourceImpl.getFavoritePokemon(tId);
+        final result = await dataSourceImpl.getFavoritePokemonById(tId);
 
         // assert
         expect(result, tPokemonModel);
@@ -72,7 +72,7 @@ void main() {
             .thenAnswer((_) async => null);
 
         // act
-        final call = dataSourceImpl.getFavoritePokemon;
+        final call = dataSourceImpl.getFavoritePokemonById;
 
         // assert
         expect(() => call(tId), throwsA(const TypeMatcher<CacheException>()));
@@ -87,7 +87,7 @@ void main() {
             .thenThrow(DatabaseException);
 
         // act
-        final call = dataSourceImpl.getFavoritePokemon;
+        final call = dataSourceImpl.getFavoritePokemonById;
 
         // assert
         expect(() => call(tId), throwsA(const TypeMatcher<CacheException>()));

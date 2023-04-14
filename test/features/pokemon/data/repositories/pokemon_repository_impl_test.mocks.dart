@@ -71,16 +71,16 @@ class MockPokemonRemoteDataSource extends _i1.Mock
 class MockPokemonLocalDataSource extends _i1.Mock
     implements _i5.PokemonLocalDataSource {
   @override
-  _i4.Future<_i2.PokemonModel> getFavoritePokemon(int? id) =>
+  _i4.Future<_i2.PokemonModel> getFavoritePokemonById(int? id) =>
       (super.noSuchMethod(
         Invocation.method(
-          #getFavoritePokemon,
+          #getFavoritePokemonById,
           [id],
         ),
         returnValue: _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
           this,
           Invocation.method(
-            #getFavoritePokemon,
+            #getFavoritePokemonById,
             [id],
           ),
         )),
@@ -88,8 +88,31 @@ class MockPokemonLocalDataSource extends _i1.Mock
             _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
           this,
           Invocation.method(
-            #getFavoritePokemon,
+            #getFavoritePokemonById,
             [id],
+          ),
+        )),
+      ) as _i4.Future<_i2.PokemonModel>);
+  @override
+  _i4.Future<_i2.PokemonModel> getFavoritePokemonByName(String? name) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getFavoritePokemonByName,
+          [name],
+        ),
+        returnValue: _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #getFavoritePokemonByName,
+            [name],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #getFavoritePokemonByName,
+            [name],
           ),
         )),
       ) as _i4.Future<_i2.PokemonModel>);
