@@ -48,9 +48,16 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   }
 
   @override
-  Future<PokemonModel> getFavoritePokemonByName(String name) {
-    // TODO: implement getFavoritePokemonByName
-    throw UnimplementedError();
+  Future<PokemonModel> getFavoritePokemonByName(String name) async {
+    try {
+      final pokemon = await database.getPokemonByName(name);
+
+      if (pokemon == null) throw CacheException();
+
+      return pokemon;
+    } catch (error) {
+      throw CacheException();
+    }
   }
 
   @override

@@ -47,7 +47,7 @@ void main() {
 
   const tPokemonModels = [tPokemonModel];
 
-  group('getFavoritePokemon', () {
+  group('getFavoritePokemonById', () {
     test(
       'should get pokemon with id from the database',
       () async {
@@ -91,6 +91,56 @@ void main() {
 
         // assert
         expect(() => call(tId), throwsA(const TypeMatcher<CacheException>()));
+      },
+    );
+  });
+
+  group('getFavoritePokemonByName', () {
+    const tName = 'Test';
+
+    test(
+      'should get pokemon with name from the database',
+      () async {
+        // arrange
+        when(mockPokemonDatabase.getPokemonByName(any))
+            .thenAnswer((_) async => tPokemonModel);
+
+        // act
+        final result = await dataSourceImpl.getFavoritePokemonByName(tName);
+
+        // assert
+        expect(result, tPokemonModel);
+        verify(mockPokemonDatabase.getPokemonByName(tName));
+      },
+    );
+
+    test(
+      'should throw a CacheException when pokemon not found',
+      () async {
+        // arrange
+        when(mockPokemonDatabase.getPokemonByName(any))
+            .thenAnswer((_) async => null);
+
+        // act
+        final call = dataSourceImpl.getFavoritePokemonByName;
+
+        // assert
+        expect(() => call(tName), throwsA(const TypeMatcher<CacheException>()));
+      },
+    );
+
+    test(
+      'should throw a CacheException when an error ocurrs in the database',
+      () async {
+        // arrange
+        when(mockPokemonDatabase.getPokemonByName(any))
+            .thenThrow(DatabaseException);
+
+        // act
+        final call = dataSourceImpl.getFavoritePokemonByName;
+
+        // assert
+        expect(() => call(tName), throwsA(const TypeMatcher<CacheException>()));
       },
     );
   });
