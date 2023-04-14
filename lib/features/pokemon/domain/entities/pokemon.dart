@@ -26,6 +26,9 @@ class Pokemon extends Equatable {
   /// A list of details showing types this Pokemon has.
   final List<PokemonType> types;
 
+  /// The favorite state of this Pokemon.
+  final bool isFavorite;
+
   const Pokemon({
     required this.id,
     required this.name,
@@ -34,8 +37,11 @@ class Pokemon extends Equatable {
     required this.sprites,
     required this.stats,
     required this.types,
+    this.isFavorite = false,
   });
 
   @override
-  List<Object> get props => [id, name, height, weight, sprites, stats, types];
+  List<Object> get props {
+    return [id, name, height, weight, sprites, stats, types, isFavorite];
+  }
 }

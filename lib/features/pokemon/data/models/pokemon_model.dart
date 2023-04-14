@@ -3,6 +3,9 @@ import 'package:pokedex_app/features/pokemon/data/models/pokemon_stat_model.dart
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_type_model.dart';
 import 'package:pokedex_app/features/pokemon/data/models/stat_model.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_stat.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_type.dart';
 
 class PokemonModel extends Pokemon {
   const PokemonModel({
@@ -13,6 +16,7 @@ class PokemonModel extends Pokemon {
     required super.sprites,
     required super.stats,
     required super.types,
+    super.isFavorite,
   });
 
   @override
@@ -39,6 +43,29 @@ class PokemonModel extends Pokemon {
       types: jsonTypes.map((jsonType) {
         return PokemonTypeModel.fromJson(jsonType);
       }).toList(),
+      isFavorite: json['is_favorite'] ?? false,
+    );
+  }
+
+  PokemonModel copyWith({
+    int? id,
+    String? name,
+    int? height,
+    int? weight,
+    PokemonSprites? sprites,
+    List<PokemonStat>? stats,
+    List<PokemonType>? types,
+    bool? isFavorite,
+  }) {
+    return PokemonModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      height: height ?? this.height,
+      weight: weight ?? this.weight,
+      sprites: sprites ?? this.sprites,
+      stats: stats ?? this.stats,
+      types: types ?? this.types,
+      isFavorite: isFavorite ?? this.isFavorite,
     );
   }
 
@@ -51,6 +78,7 @@ class PokemonModel extends Pokemon {
       'sprites': sprites.toJson(),
       'stats': stats.map((stat) => stat.toJson()).toList(),
       'types': types.map((type) => type.toJson()).toList(),
+      'is_favorite': isFavorite,
     };
   }
 

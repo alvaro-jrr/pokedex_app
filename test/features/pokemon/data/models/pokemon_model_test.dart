@@ -92,6 +92,44 @@ void main() {
     );
   });
 
+  group('copyWith', () {
+    const tNewPokemonModel = PokemonModel(
+      id: 1,
+      name: 'New Name',
+      height: 1,
+      weight: 1,
+      sprites: tPokemonSpritesModel,
+      stats: tStatModels,
+      types: tTypeModels,
+      isFavorite: true,
+    );
+
+    test(
+      'should return a valid model',
+      () async {
+        // act
+        final result = tPokemonModel.copyWith();
+
+        // assert
+        expect(result, tPokemonModel);
+      },
+    );
+
+    test(
+      'should replace the specified properties',
+      () async {
+        // act
+        final result = tPokemonModel.copyWith(
+          name: tNewPokemonModel.name,
+          isFavorite: tNewPokemonModel.isFavorite,
+        );
+
+        // assert
+        expect(result, tNewPokemonModel);
+      },
+    );
+  });
+
   group('toJson', () {
     test(
       'should return a JSON map containing the proper data',
@@ -108,6 +146,7 @@ void main() {
           "sprites": tPokemonSpritesModel.toJson(),
           "stats": tStatModels.map((e) => e.toJson()).toList(),
           "types": tTypeModels.map((e) => e.toJson()).toList(),
+          "is_favorite": tPokemonModel.isFavorite,
         };
 
         expect(result, expectedMap);
