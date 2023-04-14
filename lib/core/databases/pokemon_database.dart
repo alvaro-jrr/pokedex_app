@@ -59,6 +59,7 @@ class PokemonDatabase {
       'Pokemon',
       {
         'id': pokemon.id,
+        'name': pokemon.name,
         'data': json.encode(pokemon.toJson()),
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
