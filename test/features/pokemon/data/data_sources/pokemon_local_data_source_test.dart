@@ -178,6 +178,8 @@ void main() {
   });
 
   group('addFavoritePokemon', () {
+    final tFavoritePokemonModel = tPokemonModel.copyWith(isFavorite: true);
+
     test(
       'should store the pokemon in the database',
       () async {
@@ -185,10 +187,25 @@ void main() {
         when(mockPokemonDatabase.newPokemon(any)).thenAnswer((_) async => tId);
 
         // act
-        dataSourceImpl.addFavoritePokemon(tPokemonModel);
+        await dataSourceImpl.addFavoritePokemon(tPokemonModel);
 
         // assert
-        verify(mockPokemonDatabase.newPokemon(tPokemonModel));
+        verify(mockPokemonDatabase.newPokemon(tFavoritePokemonModel));
+      },
+    );
+
+    test(
+      'should return the pokemon with isFavorite set to true',
+      () async {
+        // arrange
+        when(mockPokemonDatabase.newPokemon(any)).thenAnswer((_) async => tId);
+
+        // act
+        final result = await dataSourceImpl.addFavoritePokemon(tPokemonModel);
+
+        // assert
+        verify(mockPokemonDatabase.newPokemon(tFavoritePokemonModel));
+        expect(result, tFavoritePokemonModel);
       },
     );
 

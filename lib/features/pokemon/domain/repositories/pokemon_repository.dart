@@ -14,7 +14,7 @@ abstract class PokemonRepository {
   Future<Either<Failure, List<Pokemon>>> getFavoritePokemons();
 
   /// Adds the [Pokemon] into the favorites list.
-  Future<Either<Failure, void>> addFavoritePokemon(Pokemon pokemon);
+  Future<Either<Failure, Pokemon>> addFavoritePokemon(Pokemon pokemon);
 
   /// Removes the [Pokemon] from the favorites list with the [id].
   Future<Either<Failure, void>> removeFavoritePokemon(int id);

@@ -21,7 +21,7 @@ abstract class PokemonLocalDataSource {
   /// Adds the [PokemonModel] into the favorites list.
   ///
   /// Throws [CacheException] on any error.
-  Future<void> addFavoritePokemon(PokemonModel pokemon);
+  Future<PokemonModel> addFavoritePokemon(PokemonModel pokemon);
 
   /// Removes the [PokemonModel] from the favorites list with the [id].
   ///
@@ -70,9 +70,11 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   }
 
   @override
-  Future<void> addFavoritePokemon(PokemonModel pokemon) async {
+  Future<PokemonModel> addFavoritePokemon(PokemonModel pokemon) async {
     try {
-      await database.newPokemon(pokemon);
+      final favoritePokemon = pokemon.copyWith(isFavorite: true);
+      await database.newPokemon(favoritePokemon);
+      return favoritePokemon;
     } catch (error) {
       throw CacheException();
     }

@@ -34,6 +34,7 @@ void main() {
         home: HomeSprites(frontDefault: ''),
       ),
     ),
+    isFavorite: true,
   );
 
   test(
@@ -41,7 +42,7 @@ void main() {
     () async {
       // arrange
       when(mockPokemonRepository.addFavoritePokemon(any))
-          .thenAnswer((_) async => const Right(null));
+          .thenAnswer((_) async => const Right(tPokemon));
 
       // act
       final result = await useCase(
@@ -51,7 +52,7 @@ void main() {
       );
 
       // assert
-      expect(result, const Right(null));
+      expect(result, const Right(tPokemon));
       verify(mockPokemonRepository.addFavoritePokemon(tPokemon));
       verifyNoMoreInteractions(mockPokemonRepository);
     },

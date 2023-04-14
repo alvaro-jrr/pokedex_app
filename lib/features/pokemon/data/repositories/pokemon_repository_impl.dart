@@ -67,7 +67,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
   }
 
   @override
-  Future<Either<Failure, void>> addFavoritePokemon(Pokemon pokemon) async {
+  Future<Either<Failure, Pokemon>> addFavoritePokemon(Pokemon pokemon) async {
     final pokemonModel = PokemonModel(
       id: pokemon.id,
       name: pokemon.name,

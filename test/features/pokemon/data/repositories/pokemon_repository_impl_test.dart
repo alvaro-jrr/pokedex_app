@@ -62,6 +62,8 @@ void main() {
     ],
   );
 
+  final tFavoritePokemonModel = tPokemonModel.copyWith(isFavorite: true);
+
   const Pokemon tPokemon = tPokemonModel;
 
   group('getConcretePokemon', () {
@@ -271,13 +273,14 @@ void main() {
       () async {
         // arrange
         when(mockPokemonLocalDataSource.addFavoritePokemon(any))
-            .thenAnswer((_) => tFutureVoid);
+            .thenAnswer((_) async => tFavoritePokemonModel);
 
         // act
-        await repository.addFavoritePokemon(tPokemon);
+        final result = await repository.addFavoritePokemon(tPokemon);
 
         // assert
         verify(mockPokemonLocalDataSource.addFavoritePokemon(tPokemonModel));
+        expect(result, Right(tFavoritePokemonModel));
       },
     );
 

@@ -6,13 +6,13 @@ import 'package:pokedex_app/core/use_cases/use_case.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart';
 
-class AddFavoritePokemon implements UseCase<void, AddFavoritePokemonParams> {
+class AddFavoritePokemon implements UseCase<Pokemon, AddFavoritePokemonParams> {
   final PokemonRepository repository;
 
   AddFavoritePokemon(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(AddFavoritePokemonParams params) {
+  Future<Either<Failure, Pokemon>> call(AddFavoritePokemonParams params) {
     return repository.addFavoritePokemon(params.pokemon);
   }
 }

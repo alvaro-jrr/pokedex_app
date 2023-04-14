@@ -129,15 +129,28 @@ class MockPokemonLocalDataSource extends _i1.Mock
             _i4.Future<List<_i2.PokemonModel>>.value(<_i2.PokemonModel>[]),
       ) as _i4.Future<List<_i2.PokemonModel>>);
   @override
-  _i4.Future<void> addFavoritePokemon(_i2.PokemonModel? pokemon) =>
+  _i4.Future<_i2.PokemonModel> addFavoritePokemon(_i2.PokemonModel? pokemon) =>
       (super.noSuchMethod(
         Invocation.method(
           #addFavoritePokemon,
           [pokemon],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #addFavoritePokemon,
+            [pokemon],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #addFavoritePokemon,
+            [pokemon],
+          ),
+        )),
+      ) as _i4.Future<_i2.PokemonModel>);
   @override
   _i4.Future<void> removeFavoritePokemon(int? id) => (super.noSuchMethod(
         Invocation.method(
