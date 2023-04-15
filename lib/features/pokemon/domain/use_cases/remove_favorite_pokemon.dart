@@ -3,16 +3,17 @@ import 'package:equatable/equatable.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
 import 'package:pokedex_app/core/use_cases/use_case.dart';
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart';
 
 class RemoveFavoritePokemon
-    implements UseCase<void, RemoveFavoritePokemonParams> {
+    implements UseCase<Pokemon, RemoveFavoritePokemonParams> {
   final PokemonRepository repository;
 
   RemoveFavoritePokemon(this.repository);
 
   @override
-  Future<Either<Failure, void>> call(RemoveFavoritePokemonParams params) {
+  Future<Either<Failure, Pokemon>> call(RemoveFavoritePokemonParams params) {
     return repository.removeFavoritePokemon(params.id);
   }
 }

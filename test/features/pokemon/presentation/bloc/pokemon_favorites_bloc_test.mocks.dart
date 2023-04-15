@@ -161,15 +161,15 @@ class MockRemoveFavoritePokemon extends _i1.Mock
         ),
       ) as _i2.PokemonRepository);
   @override
-  _i5.Future<_i3.Either<_i6.Failure, void>> call(
+  _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>> call(
           _i10.RemoveFavoritePokemonParams? params) =>
       (super.noSuchMethod(
         Invocation.method(
           #call,
           [params],
         ),
-        returnValue: _i5.Future<_i3.Either<_i6.Failure, void>>.value(
-            _FakeEither_1<_i6.Failure, void>(
+        returnValue: _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>.value(
+            _FakeEither_1<_i6.Failure, _i7.Pokemon>(
           this,
           Invocation.method(
             #call,
@@ -177,13 +177,13 @@ class MockRemoveFavoritePokemon extends _i1.Mock
           ),
         )),
         returnValueForMissingStub:
-            _i5.Future<_i3.Either<_i6.Failure, void>>.value(
-                _FakeEither_1<_i6.Failure, void>(
+            _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>.value(
+                _FakeEither_1<_i6.Failure, _i7.Pokemon>(
           this,
           Invocation.method(
             #call,
             [params],
           ),
         )),
-      ) as _i5.Future<_i3.Either<_i6.Failure, void>>);
+      ) as _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>);
 }

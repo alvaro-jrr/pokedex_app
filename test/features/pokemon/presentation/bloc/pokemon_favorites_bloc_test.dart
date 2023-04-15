@@ -164,7 +164,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, AddedToFavorites] when data is gotten successfully',
+      'should emit [LoadingFavorite, LoadedFavorite] when data is added successfully',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -184,7 +184,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, ErrorFavorites] when getting data fails',
+      'should emit [LoadingFavorite, ErrorFavorites] when adding data fails',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -221,6 +221,88 @@ void main() {
 
         // act
         bloc.add(const AddPokemonToFavorites(tPokemon));
+      },
+    );
+  });
+
+  group('RemovePokemonFromFavorites', () {
+    const tId = 1;
+
+    test(
+      'should remove the pokemon with the use case',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        bloc.add(const RemovePokemonFromFavorites(tId));
+        await untilCalled(mockRemoveFavoritePokemon(any));
+
+        // assert
+        verify(mockRemoveFavoritePokemon(
+          const RemoveFavoritePokemonParams(id: tId),
+        ));
+      },
+    );
+
+    test(
+      'should emit [LoadingFavorite, LoadedFavorite] when data is removed successfully',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // assert later
+        final expected = [
+          LoadingFavorite(),
+          const LoadedFavorite(pokemon: tPokemon),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const RemovePokemonFromFavorites(tId));
+      },
+    );
+
+    test(
+      'should emit [LoadingFavorite, ErrorFavorites] when removing data fails',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // assert later
+        final expected = [
+          LoadingFavorite(),
+          const ErrorFavorites(message: serverFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const RemovePokemonFromFavorites(tId));
+      },
+    );
+
+    test(
+      'should emit [LoadingFavorite, ErrorFavorites] with a proper message for the error',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // assert later
+        final expected = [
+          LoadingFavorite(),
+          const ErrorFavorites(message: cacheFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const RemovePokemonFromFavorites(tId));
       },
     );
   });

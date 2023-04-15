@@ -48,6 +48,19 @@ class PokemonFavoritesBloc
         (pokemon) => LoadedFavorite(pokemon: pokemon),
       ));
     });
+
+    on<RemovePokemonFromFavorites>((event, emit) async {
+      emit(LoadingFavorite());
+
+      final failureOrPokemon = await removeFavoritePokemon(
+        RemoveFavoritePokemonParams(id: event.id),
+      );
+
+      emit(failureOrPokemon.fold(
+        (failure) => ErrorFavorites(message: _mapFailureToMessage(failure)),
+        (pokemon) => LoadedFavorite(pokemon: pokemon),
+      ));
+    });
   }
 
   String _mapFailureToMessage(Failure failure) {
