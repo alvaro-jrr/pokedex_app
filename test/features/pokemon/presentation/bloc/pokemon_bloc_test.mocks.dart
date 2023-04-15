@@ -262,4 +262,13 @@ class MockInputConverter extends _i1.Mock implements _i12.InputConverter {
           ),
         ),
       ) as _i3.Either<_i6.Failure, String>);
+  @override
+  String stringToLowerCase(String? str) => (super.noSuchMethod(
+        Invocation.method(
+          #stringToLowerCase,
+          [str],
+        ),
+        returnValue: '',
+        returnValueForMissingStub: '',
+      ) as String);
 }

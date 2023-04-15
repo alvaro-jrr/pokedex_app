@@ -39,4 +39,20 @@ void main() {
       },
     );
   });
+
+  group('stringToLowerCase', () {
+    test(
+      'should lowercase the string',
+      () async {
+        // arrange
+        const str = 'QUERY';
+
+        // act
+        final result = inputConverter.stringToLowerCase(str);
+
+        // assert
+        expect(result, str.toLowerCase());
+      },
+    );
+  });
 }

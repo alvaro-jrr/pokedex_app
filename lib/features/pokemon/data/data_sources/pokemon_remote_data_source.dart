@@ -22,7 +22,7 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
     final response = await client.get(
       Uri.https(
         'pokeapi.co',
-        '/api/v2/pokemon/$query',
+        '/api/v2/pokemon/${Uri.encodeComponent(query)}',
       ),
       headers: {
         'Content-Type': 'application/json',

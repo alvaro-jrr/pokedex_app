@@ -318,10 +318,20 @@ void main() {
 
   group('GetPokemonForConcreteQuery', () {
     const tQuery = 'Test';
+    const tQueryParsed = 'test';
 
     void setUpMockInputConverterSuccess() {
       when(mockInputConverter.nonEmptyString(any))
           .thenAnswer((_) => const Right(tQuery));
+    }
+
+    void setUpSucessfullCall() {
+      setUpMockInputConverterSuccess();
+
+      when(mockInputConverter.stringToLowerCase(any)).thenReturn(tQueryParsed);
+
+      when(mockGetConcretePokemon(any))
+          .thenAnswer((_) async => const Right(tPokemon));
     }
 
     test(
@@ -362,13 +372,25 @@ void main() {
     );
 
     test(
+      'should lowercase the query',
+      () async {
+        // arrange
+        setUpSucessfullCall();
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+        await untilCalled(mockInputConverter.stringToLowerCase(any));
+
+        // assert
+        verify(mockInputConverter.stringToLowerCase(tQuery));
+      },
+    );
+
+    test(
       'should get data from the concrete use case',
       () async {
         // arrange
-        setUpMockInputConverterSuccess();
-
-        when(mockGetConcretePokemon(any))
-            .thenAnswer((_) async => const Right(tPokemon));
+        setUpSucessfullCall();
 
         // act
         bloc.add(const GetPokemonForConcreteQuery(tQuery));
@@ -376,7 +398,9 @@ void main() {
 
         // assert
         verify(
-          mockGetConcretePokemon(const GetConcretePokemonParams(query: tQuery)),
+          mockGetConcretePokemon(
+            const GetConcretePokemonParams(query: tQueryParsed),
+          ),
         );
       },
     );

@@ -6,6 +6,8 @@ class InputConverter {
   Either<Failure, String> nonEmptyString(String str) {
     return str.isEmpty ? Left(InvalidInputFailure()) : Right(str);
   }
+
+  String stringToLowerCase(String str) => str.toLowerCase();
 }
 
 class InvalidInputFailure extends Failure {

@@ -57,10 +57,10 @@ void main() {
   }
 
   group('getConcretePokemon', () {
-    const tQuery = 'Test';
+    const tQuery = 'Test 1';
 
     test(
-      '''should perform a GET request on a URL with the query
+      '''should perform a GET request on a URL with the encoded query
       being the endpoint and with application/json header''',
       () async {
         // arrange
@@ -74,7 +74,7 @@ void main() {
           mockClient.get(
             Uri.https(
               'pokeapi.co',
-              '/api/v2/pokemon/$tQuery',
+              '/api/v2/pokemon/${Uri.encodeComponent(tQuery)}',
             ),
             headers: {
               'Content-Type': 'application/json',
