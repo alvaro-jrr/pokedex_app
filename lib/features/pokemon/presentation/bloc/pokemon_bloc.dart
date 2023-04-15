@@ -13,9 +13,9 @@ import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_po
 part 'pokemon_event.dart';
 part 'pokemon_state.dart';
 
-const serverFailureMessage = 'Server Failure';
-const cacheFailureMessage = 'Cache Failure';
-const invalidInputMessage = 'You must enter the name or number of the Pokemon';
+const serverFailureMessage = 'Ha ocurrido un error en el servidor';
+const cacheFailureMessage = 'Ha ocurrido un error en la caché';
+const invalidInputMessage = 'Debes ingresar el nombre o número del Pokémon';
 
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final AddFavoritePokemon addFavoritePokemon;

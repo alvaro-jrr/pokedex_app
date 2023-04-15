@@ -11,7 +11,7 @@ import 'package:pokedex_app/features/pokemon/data/repositories/pokemon_repositor
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokemon.dart';
-import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemon.dart';
+import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
 
@@ -32,7 +32,7 @@ void init() {
 
   // Use Cases.
   sl.registerLazySingleton(() => AddFavoritePokemon(sl()));
-  sl.registerLazySingleton(() => GetFavoritePokemon(sl()));
+  sl.registerLazySingleton(() => GetFavoritePokemons(sl()));
   sl.registerLazySingleton(() => RemoveFavoritePokemon(sl()));
   sl.registerLazySingleton(() => GetConcretePokemon(sl()));
 

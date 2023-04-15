@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/pages/home_page.dart';
 import 'package:pokedex_app/injection_container.dart' as di;
 
 void main() {
@@ -14,15 +18,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Material App',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Material App Bar'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
+    return BlocProvider(
+      create: (_) => di.sl<PokemonBloc>(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Pokedex',
+        initialRoute: HomePage.routeName,
+        routes: {
+          HomePage.routeName: (_) => const HomePage(),
+        },
+        theme: ThemeData.light(useMaterial3: true).copyWith(),
       ),
     );
   }
