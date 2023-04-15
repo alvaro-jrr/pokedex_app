@@ -5,38 +5,47 @@ import 'package:mockito/mockito.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
 import 'package:pokedex_app/core/use_cases/use_case.dart';
-import 'package:pokedex_app/core/utils/constants.dart';
+import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
+import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
 
 @GenerateNiceMocks([
   MockSpec<AddFavoritePokemon>(),
   MockSpec<GetFavoritePokemons>(),
   MockSpec<RemoveFavoritePokemon>(),
+  MockSpec<GetConcretePokemon>(),
+  MockSpec<InputConverter>(),
 ])
-import 'pokemon_favorites_bloc_test.mocks.dart';
+import 'pokemon_bloc_test.mocks.dart';
 
 void main() {
   late MockAddFavoritePokemon mockAddFavoritePokemon;
   late MockGetFavoritePokemons mockGetFavoritePokemons;
   late MockRemoveFavoritePokemon mockRemoveFavoritePokemon;
-  late PokemonFavoritesBloc bloc;
+  late MockGetConcretePokemon mockGetConcretePokemon;
+  late MockInputConverter mockInputConverter;
+  late PokemonBloc bloc;
 
   setUp(() {
     mockAddFavoritePokemon = MockAddFavoritePokemon();
     mockGetFavoritePokemons = MockGetFavoritePokemons();
     mockRemoveFavoritePokemon = MockRemoveFavoritePokemon();
+    mockGetConcretePokemon = MockGetConcretePokemon();
+    mockInputConverter = MockInputConverter();
 
-    bloc = PokemonFavoritesBloc(
+    bloc = PokemonBloc(
       addFavoritePokemon: mockAddFavoritePokemon,
       getFavoritePokemons: mockGetFavoritePokemons,
       removeFavoritePokemon: mockRemoveFavoritePokemon,
+      getConcretePokemon: mockGetConcretePokemon,
+      inputConverter: mockInputConverter,
     );
   });
 
@@ -58,10 +67,10 @@ void main() {
   const tPokemonList = [tPokemon];
 
   test(
-    'initial state should be EmptyFavorites',
+    'initial state should be Empty',
     () async {
       // assert
-      expect(bloc.state, EmptyFavorites());
+      expect(bloc.state, Empty());
     },
   );
 
@@ -83,7 +92,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorites, LoadedFavorites] when data is gotten successfully',
+      'should emit [Loading, LoadedFavorites] when data is gotten successfully',
       () async {
         // arrange
         when(mockGetFavoritePokemons(any))
@@ -91,7 +100,7 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorites(),
+          Loading(),
           const LoadedFavorites(pokemons: tPokemonList),
         ];
 
@@ -103,7 +112,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorites, ErrorFavorites] when getting data fails',
+      'should emit [Loading, ErrorFavorites] when getting data fails',
       () async {
         // arrange
         when(mockGetFavoritePokemons(any))
@@ -111,8 +120,8 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorites(),
-          const ErrorFavorites(message: serverFailureMessage),
+          Loading(),
+          const Error(message: serverFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -123,7 +132,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorites, ErrorFavorites] with a proper message for the error',
+      'should emit [Loading, ErrorFavorites] with a proper message for the error',
       () async {
         // arrange
 
@@ -132,8 +141,8 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorites(),
-          const ErrorFavorites(message: cacheFailureMessage),
+          Loading(),
+          const Error(message: cacheFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -164,7 +173,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, LoadedFavorite] when data is added successfully',
+      'should emit [LoadingFavorite, LoadedPokemon] when data is added successfully',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -173,7 +182,7 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const LoadedFavorite(pokemon: tPokemon),
+          const LoadedPokemon(pokemon: tPokemon),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -184,7 +193,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, ErrorFavorites] when adding data fails',
+      'should emit [LoadingFavorite, Error] when adding data fails',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -193,7 +202,7 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const ErrorFavorites(message: serverFailureMessage),
+          const Error(message: serverFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -214,7 +223,7 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const ErrorFavorites(message: cacheFailureMessage),
+          const Error(message: cacheFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -247,7 +256,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, LoadedFavorite] when data is removed successfully',
+      'should emit [LoadingFavorite, LoadedPokemon] when data is removed successfully',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -256,7 +265,7 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const LoadedFavorite(pokemon: tPokemon),
+          const LoadedPokemon(pokemon: tPokemon),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -267,7 +276,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, ErrorFavorites] when removing data fails',
+      'should emit [LoadingFavorite, Error] when removing data fails',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -276,7 +285,7 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const ErrorFavorites(message: serverFailureMessage),
+          const Error(message: serverFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
@@ -287,7 +296,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, ErrorFavorites] with a proper message for the error',
+      'should emit [LoadingFavorite, Error] with a proper message for the error',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -296,13 +305,145 @@ void main() {
         // assert later
         final expected = [
           LoadingFavorite(),
-          const ErrorFavorites(message: cacheFailureMessage),
+          const Error(message: cacheFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
 
         // act
         bloc.add(const RemovePokemonFromFavorites(tId));
+      },
+    );
+  });
+
+  group('GetPokemonForConcreteQuery', () {
+    const tQuery = 'Test';
+
+    void setUpMockInputConverterSuccess() {
+      when(mockInputConverter.nonEmptyString(any))
+          .thenAnswer((_) => const Right(tQuery));
+    }
+
+    test(
+      'should call the InputConverter to validate the query',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+        await untilCalled(mockInputConverter.nonEmptyString(any));
+
+        // assert
+        verify(mockInputConverter.nonEmptyString(tQuery));
+      },
+    );
+
+    test(
+      'should emit [Error] when the input is invalid',
+      () async {
+        // arrange
+        when(mockInputConverter.nonEmptyString(any))
+            .thenAnswer((_) => Left(InvalidInputFailure()));
+
+        // assert later
+        const expected = [
+          Error(message: invalidInputMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+      },
+    );
+
+    test(
+      'should get data from the concrete use case',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+        await untilCalled(mockGetConcretePokemon(any));
+
+        // assert
+        verify(
+          mockGetConcretePokemon(const GetConcretePokemonParams(query: tQuery)),
+        );
+      },
+    );
+
+    test(
+      'should emit [Loading, LoadedPokemon] when data is gotten successfully',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const LoadedPokemon(pokemon: tPokemon),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+      },
+    );
+
+    test(
+      'should emit [Loading, Error] when getting data fails',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Error(message: serverFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
+      },
+    );
+
+    test(
+      'should emit [Loading, ErrorSearch] with a proper message for the error',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // assert later
+        final expected = [
+          Loading(),
+          const Error(message: cacheFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const GetPokemonForConcreteQuery(tQuery));
       },
     );
   });

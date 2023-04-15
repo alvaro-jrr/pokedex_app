@@ -3,34 +3,42 @@ import 'package:equatable/equatable.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
 import 'package:pokedex_app/core/use_cases/use_case.dart';
-import 'package:pokedex_app/core/utils/constants.dart';
+import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
+import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 
-part 'pokemon_favorites_event.dart';
-part 'pokemon_favorites_state.dart';
+part 'pokemon_event.dart';
+part 'pokemon_state.dart';
 
-class PokemonFavoritesBloc
-    extends Bloc<PokemonFavoritesEvent, PokemonFavoritesState> {
+const serverFailureMessage = 'Server Failure';
+const cacheFailureMessage = 'Cache Failure';
+const invalidInputMessage = 'You must enter the name or number of the Pokemon';
+
+class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final AddFavoritePokemon addFavoritePokemon;
   final GetFavoritePokemons getFavoritePokemons;
   final RemoveFavoritePokemon removeFavoritePokemon;
+  final GetConcretePokemon getConcretePokemon;
+  final InputConverter inputConverter;
 
-  PokemonFavoritesBloc({
+  PokemonBloc({
     required this.addFavoritePokemon,
     required this.getFavoritePokemons,
     required this.removeFavoritePokemon,
-  }) : super(EmptyFavorites()) {
+    required this.getConcretePokemon,
+    required this.inputConverter,
+  }) : super(Empty()) {
     on<GetPokemonsFromFavorites>((event, emit) async {
-      emit(LoadingFavorites());
+      emit(Loading());
 
       final failureOrPokemons = await getFavoritePokemons(NoParams());
 
       emit(
         failureOrPokemons.fold(
-          (failure) => ErrorFavorites(message: _mapFailureToMessage(failure)),
+          (failure) => Error(message: _mapFailureToMessage(failure)),
           (pokemons) => LoadedFavorites(pokemons: pokemons),
         ),
       );
@@ -44,8 +52,8 @@ class PokemonFavoritesBloc
       );
 
       emit(failureOrPokemon.fold(
-        (failure) => ErrorFavorites(message: _mapFailureToMessage(failure)),
-        (pokemon) => LoadedFavorite(pokemon: pokemon),
+        (failure) => Error(message: _mapFailureToMessage(failure)),
+        (pokemon) => LoadedPokemon(pokemon: pokemon),
       ));
     });
 
@@ -57,9 +65,33 @@ class PokemonFavoritesBloc
       );
 
       emit(failureOrPokemon.fold(
-        (failure) => ErrorFavorites(message: _mapFailureToMessage(failure)),
-        (pokemon) => LoadedFavorite(pokemon: pokemon),
+        (failure) => Error(message: _mapFailureToMessage(failure)),
+        (pokemon) => LoadedPokemon(pokemon: pokemon),
       ));
+    });
+
+    on<GetPokemonForConcreteQuery>((event, emit) async {
+      final inputEither = inputConverter.nonEmptyString(event.query);
+
+      await inputEither.fold(
+        (failure) async => emit(const Error(message: invalidInputMessage)),
+        (query) async {
+          emit(Loading());
+
+          final failureOrPokemon = await getConcretePokemon(
+            GetConcretePokemonParams(query: query),
+          );
+
+          emit(
+            failureOrPokemon.fold(
+              (failure) {
+                return Error(message: _mapFailureToMessage(failure));
+              },
+              (pokemon) => LoadedPokemon(pokemon: pokemon),
+            ),
+          );
+        },
+      );
     });
   }
 
