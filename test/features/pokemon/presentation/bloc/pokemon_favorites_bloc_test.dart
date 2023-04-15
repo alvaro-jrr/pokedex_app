@@ -164,63 +164,63 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorites, LoadedFavorites] when data is gotten successfully',
+      'should emit [LoadingFavorite, AddedToFavorites] when data is gotten successfully',
       () async {
         // arrange
-        when(mockGetFavoritePokemons(any))
-            .thenAnswer((_) async => const Right(tPokemonList));
+        when(mockAddFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
 
         // assert later
         final expected = [
-          LoadingFavorites(),
-          const LoadedFavorites(pokemons: tPokemonList),
+          LoadingFavorite(),
+          const LoadedFavorite(pokemon: tPokemon),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
 
         // act
-        bloc.add(GetPokemonsFromFavorites());
+        bloc.add(const AddPokemonToFavorites(tPokemon));
       },
     );
 
     test(
-      'should emit [LoadingFavorites, ErrorFavorites] when getting data fails',
+      'should emit [LoadingFavorite, ErrorFavorites] when getting data fails',
       () async {
         // arrange
-        when(mockGetFavoritePokemons(any))
+        when(mockAddFavoritePokemon(any))
             .thenAnswer((_) async => Left(ServerFailure()));
 
         // assert later
         final expected = [
-          LoadingFavorites(),
+          LoadingFavorite(),
           const ErrorFavorites(message: serverFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
 
         // act
-        bloc.add(GetPokemonsFromFavorites());
+        bloc.add(const AddPokemonToFavorites(tPokemon));
       },
     );
 
     test(
-      'should emit [LoadingFavorites, ErrorFavorites] with a proper message for the error',
+      'should emit [LoadingFavorite, ErrorFavorites] with a proper message for the error',
       () async {
         // arrange
 
-        when(mockGetFavoritePokemons(any))
+        when(mockAddFavoritePokemon(any))
             .thenAnswer((_) async => Left(CacheFailure()));
 
         // assert later
         final expected = [
-          LoadingFavorites(),
+          LoadingFavorite(),
           const ErrorFavorites(message: cacheFailureMessage),
         ];
 
         expectLater(bloc.stream, emitsInOrder(expected));
 
         // act
-        bloc.add(GetPokemonsFromFavorites());
+        bloc.add(const AddPokemonToFavorites(tPokemon));
       },
     );
   });

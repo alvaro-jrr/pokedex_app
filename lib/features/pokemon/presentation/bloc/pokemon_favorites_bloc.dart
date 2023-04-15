@@ -36,7 +36,18 @@ class PokemonFavoritesBloc
       );
     });
 
-    on<AddPokemonToFavorites>((event, emit) {});
+    on<AddPokemonToFavorites>((event, emit) async {
+      emit(LoadingFavorite());
+
+      final failureOrPokemon = await addFavoritePokemon(
+        AddFavoritePokemonParams(pokemon: event.pokemon),
+      );
+
+      emit(failureOrPokemon.fold(
+        (failure) => ErrorFavorites(message: _mapFailureToMessage(failure)),
+        (pokemon) => LoadedFavorite(pokemon: pokemon),
+      ));
+    });
   }
 
   String _mapFailureToMessage(Failure failure) {

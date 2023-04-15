@@ -44,8 +44,6 @@ void main() {
     );
   });
 
-  final Future<void> tFutureVoid = Future.value();
-
   const tPokemonModel = PokemonModel(
     id: 1,
     name: 'Test',
@@ -63,6 +61,8 @@ void main() {
       PokemonType(slot: 1, type: Type(name: 'Test')),
     ],
   );
+
+  final tNotFavoritePokemonModel = tPokemonModel.copyWith(isFavorite: false);
 
   final tFavoritePokemonModel = tPokemonModel.copyWith(isFavorite: true);
 
@@ -311,13 +311,14 @@ void main() {
       () async {
         // arrange
         when(mockPokemonLocalDataSource.removeFavoritePokemon(any))
-            .thenAnswer((_) => tFutureVoid);
+            .thenAnswer((_) async => tNotFavoritePokemonModel);
 
         // act
-        await repository.removeFavoritePokemon(tId);
+        final result = await repository.removeFavoritePokemon(tId);
 
         // assert
         verify(mockPokemonLocalDataSource.removeFavoritePokemon(tId));
+        expect(result, Right(tNotFavoritePokemonModel));
       },
     );
 

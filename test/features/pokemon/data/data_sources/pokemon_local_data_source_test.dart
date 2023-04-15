@@ -230,15 +230,52 @@ void main() {
   group('removeFavoritePokemon', () {
     const tRows = 1;
 
+    void setUpPokemonFound() {
+      when(mockPokemonDatabase.getPokemonById(any))
+          .thenAnswer((_) async => tPokemonModel);
+    }
+
+    test(
+      'should check if pokemon exists in the database',
+      () async {
+        // arrange
+        setUpPokemonFound();
+
+        // act
+        dataSourceImpl.removeFavoritePokemon(tId);
+
+        // assert
+        verify(mockPokemonDatabase.getPokemonById(tId));
+      },
+    );
+
+    test(
+      'should throw a CacheException when pokemon when the id is not found',
+      () async {
+        // arrange
+        when(mockPokemonDatabase.getPokemonById(any))
+            .thenAnswer((_) async => null);
+
+        // act
+        final call = dataSourceImpl.removeFavoritePokemon;
+
+        // assert
+        expect(() => call(tId), throwsA(const TypeMatcher<CacheException>()));
+        verifyNever(mockPokemonDatabase.deletePokemon(tId));
+      },
+    );
+
     test(
       'should remove the pokemon in the database',
       () async {
         // arrange
+        setUpPokemonFound();
+
         when(mockPokemonDatabase.deletePokemon(any))
             .thenAnswer((_) async => tRows);
 
         // act
-        dataSourceImpl.removeFavoritePokemon(tId);
+        await dataSourceImpl.removeFavoritePokemon(tId);
 
         // assert
         verify(mockPokemonDatabase.deletePokemon(tId));
@@ -246,9 +283,28 @@ void main() {
     );
 
     test(
+      'should return the pokemon with isFavorite set to false',
+      () async {
+        // arrange
+        setUpPokemonFound();
+
+        when(mockPokemonDatabase.deletePokemon(any))
+            .thenAnswer((_) async => tRows);
+
+        // act
+        final result = await dataSourceImpl.removeFavoritePokemon(tId);
+
+        // assert
+        expect(result.isFavorite, false);
+      },
+    );
+
+    test(
       'should throw a CacheException when an error ocurrs in the database',
       () async {
         // arrange
+        setUpPokemonFound();
+
         when(mockPokemonDatabase.deletePokemon(any))
             .thenThrow(DatabaseException);
 

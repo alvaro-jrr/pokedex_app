@@ -88,7 +88,7 @@ class PokemonRepositoryImpl implements PokemonRepository {
   }
 
   @override
-  Future<Either<Failure, void>> removeFavoritePokemon(int id) async {
+  Future<Either<Failure, Pokemon>> removeFavoritePokemon(int id) async {
     try {
       return Right(await localDataSource.removeFavoritePokemon(id));
     } on CacheException {

@@ -152,14 +152,28 @@ class MockPokemonLocalDataSource extends _i1.Mock
         )),
       ) as _i4.Future<_i2.PokemonModel>);
   @override
-  _i4.Future<void> removeFavoritePokemon(int? id) => (super.noSuchMethod(
+  _i4.Future<_i2.PokemonModel> removeFavoritePokemon(int? id) =>
+      (super.noSuchMethod(
         Invocation.method(
           #removeFavoritePokemon,
           [id],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #removeFavoritePokemon,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.PokemonModel>.value(_FakePokemonModel_0(
+          this,
+          Invocation.method(
+            #removeFavoritePokemon,
+            [id],
+          ),
+        )),
+      ) as _i4.Future<_i2.PokemonModel>);
 }
 
 /// A class which mocks [NetworkInfo].

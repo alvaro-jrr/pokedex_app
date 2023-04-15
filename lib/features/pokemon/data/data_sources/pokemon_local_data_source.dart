@@ -26,7 +26,7 @@ abstract class PokemonLocalDataSource {
   /// Removes the [PokemonModel] from the favorites list with the [id].
   ///
   /// Throws [CacheException] if Pokemon with [id] not found.
-  Future<void> removeFavoritePokemon(int id);
+  Future<PokemonModel> removeFavoritePokemon(int id);
 }
 
 class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
@@ -81,9 +81,14 @@ class PokemonLocalDataSourceImpl implements PokemonLocalDataSource {
   }
 
   @override
-  Future<void> removeFavoritePokemon(int id) async {
+  Future<PokemonModel> removeFavoritePokemon(int id) async {
     try {
+      final pokemon = await database.getPokemonById(id);
+
+      if (pokemon == null) throw CacheException();
+
       await database.deletePokemon(id);
+      return pokemon.copyWith(isFavorite: false);
     } catch (error) {
       throw CacheException();
     }
