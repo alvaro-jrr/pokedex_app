@@ -14,15 +14,6 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // appBar: AppBar(
-      //   title: const Text('Pokédex'),
-      //   actions: [
-      //     IconButton(
-      //       onPressed: () {},
-      //       icon: const Icon(Icons.list),
-      //     ),
-      //   ],
-      // ),
       body: CustomScrollView(
         slivers: [
           SliverAppBar.large(
@@ -42,9 +33,9 @@ class HomePage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
-                  Header(),
+                  _Header(),
                   SizedBox(height: 24),
-                  Expanded(child: Content()),
+                  Expanded(child: _Content()),
                 ],
               ),
             ),
@@ -55,8 +46,8 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class Header extends StatelessWidget {
-  const Header({super.key});
+class _Header extends StatelessWidget {
+  const _Header();
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +67,8 @@ class Header extends StatelessWidget {
   }
 }
 
-class Content extends StatelessWidget {
-  const Content({super.key});
+class _Content extends StatelessWidget {
+  const _Content();
 
   @override
   Widget build(BuildContext context) {

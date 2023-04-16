@@ -14,6 +14,10 @@ class PokemonDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const subtitleTextStyle = TextStyle(
+      fontSize: 24,
+    );
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,6 +26,18 @@ class PokemonDisplay extends StatelessWidget {
         TypesList(types: pokemon.types),
         const SizedBox(height: 16),
         _PokemonImage(pokemon: pokemon),
+        const SizedBox(height: 24),
+        const Text(
+          'Tamaño',
+          style: subtitleTextStyle,
+        ),
+        const SizedBox(height: 16),
+        PokemonSize(pokemon: pokemon),
+        const SizedBox(height: 24),
+        const Text(
+          'Estadísticas',
+          style: subtitleTextStyle,
+        ),
         const SizedBox(height: 16),
         StatsList(stats: pokemon.stats),
         const SizedBox(height: 32),
