@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/widgets/message_display.dart';
-import 'package:pokedex_app/features/pokemon/presentation/widgets/pokemon_display.dart';
-import 'package:pokedex_app/features/pokemon/presentation/widgets/pokemon_search.dart';
+import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = 'home';
@@ -16,11 +14,27 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: const Text('Pokedex'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Pokédex'),
+      //   actions: [
+      //     IconButton(
+      //       onPressed: () {},
+      //       icon: const Icon(Icons.list),
+      //     ),
+      //   ],
+      // ),
       body: CustomScrollView(
         slivers: [
+          SliverAppBar.large(
+            title: const Text('Tu Pokédex'),
+            backgroundColor: Colors.blue.shade100,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.list),
+              ),
+            ],
+          ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
@@ -29,8 +43,6 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: const [
                   Header(),
-                  SizedBox(height: 24),
-                  PokemonSearch(),
                   SizedBox(height: 24),
                   Expanded(child: Content()),
                 ],
@@ -54,14 +66,11 @@ class Header extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '¿Cuál Pokémon estas buscando?',
-          style: textTheme.headlineLarge,
-        ),
-        const SizedBox(height: 12),
-        Text(
-          'Busca un Pokémon por su nombre o utilizando su número de Pokedex.',
+          'Busca un Pokémon por su nombre o utilizando su número de Pokédex.',
           style: textTheme.bodyLarge,
         ),
+        const SizedBox(height: 24),
+        const PokemonSearch()
       ],
     );
   }

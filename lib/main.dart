@@ -27,7 +27,10 @@ class MyApp extends StatelessWidget {
         routes: {
           HomePage.routeName: (_) => const HomePage(),
         },
-        theme: ThemeData.light(useMaterial3: true).copyWith(),
+        theme: ThemeData(
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+        ),
       ),
     );
   }
