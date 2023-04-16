@@ -40,6 +40,8 @@ class PokemonRepositoryImpl implements PokemonRepository {
       // Search remotely the pokemon.
       try {
         return Right(await remoteDataSource.getConcretePokemon(query));
+      } on NotFoundException {
+        return Left(NotFoundFailure());
       } on ServerException {
         return Left(ServerFailure());
       }

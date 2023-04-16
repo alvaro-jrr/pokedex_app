@@ -8,7 +8,8 @@ import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
 abstract class PokemonRemoteDataSource {
   /// Calls the https://pokeapi.co/api/v2/pokemon/[query] endpoint.
   ///
-  /// Throws a [ServerException] for all error codes.
+  /// Throws a [NotFoundException] when the pokemon is not found,
+  /// otherwise throws a [ServerException] for all other error codes.
   Future<PokemonModel> getConcretePokemon(String query);
 }
 
@@ -19,18 +20,24 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
 
   @override
   Future<PokemonModel> getConcretePokemon(String query) async {
-    final response = await client.get(
-      Uri.https(
-        'pokeapi.co',
-        '/api/v2/pokemon/${Uri.encodeComponent(query)}',
-      ),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    );
+    try {
+      final response = await client.get(
+        Uri.https(
+          'pokeapi.co',
+          '/api/v2/pokemon/${Uri.encodeComponent(query)}',
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
 
-    if (response.statusCode != 200) throw ServerException();
+      if (response.statusCode == 404) throw NotFoundException();
 
-    return PokemonModel.fromJson(json.decode(response.body));
+      if (response.statusCode != 200) throw ServerException();
+
+      return PokemonModel.fromJson(json.decode(response.body));
+    } on http.ClientException {
+      throw ServerException();
+    }
   }
 }

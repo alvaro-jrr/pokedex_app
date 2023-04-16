@@ -149,6 +149,22 @@ void main() {
         );
 
         test(
+          'should return NotFoundFailure when the call to remote data answers with not pokemon found ',
+          () async {
+            // arrange
+            when(mockPokemonRemoteDataSource.getConcretePokemon(any))
+                .thenThrow(NotFoundException());
+
+            // act
+            final result = await repository.getConcretePokemon(tQuery);
+
+            // assert
+            verify(mockPokemonRemoteDataSource.getConcretePokemon(tQuery));
+            expect(result, Left(NotFoundFailure()));
+          },
+        );
+
+        test(
           'should return ServerFailure when the call to remote data source is unsuccessful',
           () async {
             // arrange

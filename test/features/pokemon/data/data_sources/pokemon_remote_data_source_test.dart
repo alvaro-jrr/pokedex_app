@@ -56,6 +56,11 @@ void main() {
         .thenAnswer((_) async => http.Response('Not Found', 404));
   }
 
+  void setUpMockHttpClientGeneralError() {
+    when(mockClient.get(any, headers: anyNamed('headers')))
+        .thenAnswer((_) async => http.Response('Server Error', 500));
+  }
+
   group('getConcretePokemon', () {
     const tQuery = 'Test 1';
 
@@ -99,10 +104,45 @@ void main() {
     );
 
     test(
-      'should throw a ServerException when the status code is 404 or other',
+      'should throw a ServerException when the status code is 404',
       () async {
         // arrange
         setUpMockHttpClientError404();
+
+        // act
+        final call = dataSourceImpl.getConcretePokemon;
+
+        // assert
+        expect(
+          () => call(tQuery),
+          throwsA(const TypeMatcher<NotFoundException>()),
+        );
+      },
+    );
+
+    test(
+      'should throw a ServerException when the status code is other than 404',
+      () async {
+        // arrange
+        setUpMockHttpClientGeneralError();
+
+        // act
+        final call = dataSourceImpl.getConcretePokemon;
+
+        // assert
+        expect(
+          () => call(tQuery),
+          throwsA(const TypeMatcher<ServerException>()),
+        );
+      },
+    );
+
+    test(
+      'should throw a ServerException when the call throws a ClientException',
+      () async {
+        // arrange
+        when(mockClient.get(any, headers: anyNamed('headers')))
+            .thenThrow(http.ClientException(''));
 
         // act
         final call = dataSourceImpl.getConcretePokemon;

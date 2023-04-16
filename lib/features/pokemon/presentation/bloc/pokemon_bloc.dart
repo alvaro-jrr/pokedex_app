@@ -13,6 +13,7 @@ import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_po
 part 'pokemon_event.dart';
 part 'pokemon_state.dart';
 
+const notFoundFailureMessage = 'Pokémon no ha sido encontrado';
 const serverFailureMessage = 'Ha ocurrido un error en el servidor';
 const cacheFailureMessage = 'Ha ocurrido un error en la caché';
 const invalidInputMessage = 'Debes ingresar el nombre o número del Pokémon';
@@ -104,6 +105,9 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
 
       case CacheFailure:
         return cacheFailureMessage;
+
+      case NotFoundFailure:
+        return notFoundFailureMessage;
 
       default:
         return 'Unexpected error';
