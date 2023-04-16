@@ -78,7 +78,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         (query) async {
           emit(Loading());
 
-          final parsedQuery = inputConverter.stringToLowerCase(query);
+          final parsedQuery = inputConverter.toSearchQuery(query);
 
           final failureOrPokemon = await getConcretePokemon(
             GetConcretePokemonParams(query: parsedQuery),

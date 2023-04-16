@@ -25,7 +25,8 @@ class _PokemonSearchState extends State<PokemonSearch> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
         ),
-        hintText: 'Busca un Pokémon',
+        labelText: 'Pokémon',
+        hintText: 'ej: pikachu, ditto, 1',
         suffixIcon: const Icon(Icons.search),
       ),
     );

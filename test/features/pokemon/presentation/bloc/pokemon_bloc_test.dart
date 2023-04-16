@@ -328,7 +328,7 @@ void main() {
     void setUpSucessfullCall() {
       setUpMockInputConverterSuccess();
 
-      when(mockInputConverter.stringToLowerCase(any)).thenReturn(tQueryParsed);
+      when(mockInputConverter.toSearchQuery(any)).thenReturn(tQueryParsed);
 
       when(mockGetConcretePokemon(any))
           .thenAnswer((_) async => const Right(tPokemon));
@@ -372,17 +372,17 @@ void main() {
     );
 
     test(
-      'should lowercase the query',
+      'should convert the string with toSearchQuery method',
       () async {
         // arrange
         setUpSucessfullCall();
 
         // act
         bloc.add(const GetPokemonForConcreteQuery(tQuery));
-        await untilCalled(mockInputConverter.stringToLowerCase(any));
+        await untilCalled(mockInputConverter.toSearchQuery(any));
 
         // assert
-        verify(mockInputConverter.stringToLowerCase(tQuery));
+        verify(mockInputConverter.toSearchQuery(tQuery));
       },
     );
 

@@ -7,7 +7,11 @@ class InputConverter {
     return str.isEmpty ? Left(InvalidInputFailure()) : Right(str);
   }
 
-  String stringToLowerCase(String str) => str.toLowerCase();
+  String toSearchQuery(String str) {
+    final queryComponent = str.toLowerCase().trim();
+
+    return Uri.encodeComponent(queryComponent);
+  }
 }
 
 class InvalidInputFailure extends Failure {

@@ -40,18 +40,46 @@ void main() {
     );
   });
 
-  group('stringToLowerCase', () {
+  group('toSearchQuery', () {
     test(
       'should lowercase the string',
       () async {
         // arrange
-        const str = 'QUERY';
+        const str = 'TEST';
 
         // act
-        final result = inputConverter.stringToLowerCase(str);
+        final result = inputConverter.toSearchQuery(str);
 
         // assert
-        expect(result, str.toLowerCase());
+        expect(result, 'test');
+      },
+    );
+
+    test(
+      'should trim the string',
+      () async {
+        // arrange
+        const str = '   test   ';
+
+        // act
+        final result = inputConverter.toSearchQuery(str);
+
+        // assert
+        expect(result, 'test');
+      },
+    );
+
+    test(
+      'should encode the string for URLs',
+      () async {
+        // arrange
+        const str = 'test 1';
+
+        // act
+        final result = inputConverter.toSearchQuery(str);
+
+        // assert
+        expect(result, 'test%201');
       },
     );
   });
