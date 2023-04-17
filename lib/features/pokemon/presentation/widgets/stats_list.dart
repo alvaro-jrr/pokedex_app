@@ -93,7 +93,7 @@ class _StatChart extends StatelessWidget {
 
   /// Returns a [Color] which indicates how good is the [baseStat].
   ///
-  /// Measures taken from https://marriland.com/glossary/base-stats/
+  /// Ranges taken from https://marriland.com/glossary/base-stats/
   Color getStatColor(int baseStat) {
     // Very low.
     if (baseStat < 40) return Colors.red.shade900;

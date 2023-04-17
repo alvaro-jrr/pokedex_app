@@ -1,3 +1,4 @@
+export 'favorites_list.dart';
 export 'pokemon_search.dart';
 export 'types_list.dart';
 export 'message_display.dart';
