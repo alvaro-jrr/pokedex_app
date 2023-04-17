@@ -11,8 +11,6 @@ class Empty extends PokemonState {}
 
 class Loading extends PokemonState {}
 
-class LoadingFavorite extends PokemonState {}
-
 class LoadedPokemon extends PokemonState {
   final Pokemon pokemon;
 
@@ -20,15 +18,6 @@ class LoadedPokemon extends PokemonState {
 
   @override
   List<Object> get props => [pokemon];
-}
-
-class LoadedFavorites extends PokemonState {
-  final List<Pokemon> pokemons;
-
-  const LoadedFavorites({required this.pokemons});
-
-  @override
-  List<Object> get props => [pokemons];
 }
 
 class Error extends PokemonState {

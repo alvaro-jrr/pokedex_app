@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
 
 class FavoritesList extends StatelessWidget {
   final List<Pokemon> pokemons;
@@ -18,7 +21,17 @@ class FavoritesList extends StatelessWidget {
         mainAxisExtent: 200,
         childAspectRatio: 3 / 4,
       ),
-      itemBuilder: (context, index) => _FavoriteCard(pokemons[index]),
+      itemBuilder: (context, index) => GestureDetector(
+        child: _FavoriteCard(pokemons[index]),
+        onTap: () {
+          // Set the Pokemon as selected.
+          BlocProvider.of<PokemonBloc>(context).add(
+            GetPokemonForConcreteQuery(pokemons[index].name),
+          );
+
+          Navigator.pop(context);
+        },
+      ),
       itemCount: pokemons.length,
     );
   }

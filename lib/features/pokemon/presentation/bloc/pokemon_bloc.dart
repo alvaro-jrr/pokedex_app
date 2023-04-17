@@ -1,13 +1,11 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 
-import 'package:pokedex_app/core/error/failures.dart';
-import 'package:pokedex_app/core/use_cases/use_case.dart';
 import 'package:pokedex_app/core/utils/input_converter.dart';
+import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokemon.dart';
-import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 
 part 'pokemon_event.dart';
@@ -20,38 +18,23 @@ const invalidInputMessage = 'Debes ingresar el nombre o número del Pokémon';
 
 class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
   final AddFavoritePokemon addFavoritePokemon;
-  final GetFavoritePokemons getFavoritePokemons;
   final RemoveFavoritePokemon removeFavoritePokemon;
   final GetConcretePokemon getConcretePokemon;
   final InputConverter inputConverter;
 
   PokemonBloc({
     required this.addFavoritePokemon,
-    required this.getFavoritePokemons,
     required this.removeFavoritePokemon,
     required this.getConcretePokemon,
     required this.inputConverter,
   }) : super(Empty()) {
-    on<GetPokemonsFromFavorites>((event, emit) async {
-      emit(Loading());
-
-      final failureOrPokemons = await getFavoritePokemons(NoParams());
-
-      emit(
-        failureOrPokemons.fold(
-          (failure) => Error(message: _mapFailureToMessage(failure)),
-          (pokemons) => LoadedFavorites(pokemons: pokemons),
-        ),
-      );
-    });
-
     on<AddPokemonToFavorites>((event, emit) async {
       final failureOrPokemon = await addFavoritePokemon(
         AddFavoritePokemonParams(pokemon: event.pokemon),
       );
 
       emit(failureOrPokemon.fold(
-        (failure) => Error(message: _mapFailureToMessage(failure)),
+        (failure) => Error(message: mapFailureToMessage(failure)),
         (pokemon) => LoadedPokemon(pokemon: pokemon),
       ));
     });
@@ -62,7 +45,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
       );
 
       emit(failureOrPokemon.fold(
-        (failure) => Error(message: _mapFailureToMessage(failure)),
+        (failure) => Error(message: mapFailureToMessage(failure)),
         (pokemon) => LoadedPokemon(pokemon: pokemon),
       ));
     });
@@ -84,7 +67,7 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
           emit(
             failureOrPokemon.fold(
               (failure) {
-                return Error(message: _mapFailureToMessage(failure));
+                return Error(message: mapFailureToMessage(failure));
               },
               (pokemon) => LoadedPokemon(pokemon: pokemon),
             ),
@@ -92,21 +75,5 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         },
       );
     });
-  }
-
-  String _mapFailureToMessage(Failure failure) {
-    switch (failure.runtimeType) {
-      case ServerFailure:
-        return serverFailureMessage;
-
-      case CacheFailure:
-        return cacheFailureMessage;
-
-      case NotFoundFailure:
-        return notFoundFailureMessage;
-
-      default:
-        return 'Unexpected error';
-    }
   }
 }

@@ -16,8 +16,6 @@ class GetPokemonForConcreteQuery extends PokemonEvent {
   List<Object> get props => [query];
 }
 
-class GetPokemonsFromFavorites extends PokemonEvent {}
-
 class AddPokemonToFavorites extends PokemonEvent {
   final Pokemon pokemon;
 

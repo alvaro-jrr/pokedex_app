@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:pokedex_app/core/error/failures.dart';
+import 'package:pokedex_app/core/utils/constants.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 
 void main() {
@@ -59,6 +61,39 @@ void main() {
 
         // assert
         expect(result, 'A');
+      },
+    );
+  });
+
+  group('mapFailureToMessage', () {
+    test(
+      'should return the proper message when is a ServerFailure',
+      () async {
+        // act
+        final result = mapFailureToMessage(ServerFailure());
+
+        // assert
+        expect(result, serverFailureMessage);
+      },
+    );
+    test(
+      'should return the proper message when is a CacheFailure',
+      () async {
+        // act
+        final result = mapFailureToMessage(CacheFailure());
+
+        // assert
+        expect(result, cacheFailureMessage);
+      },
+    );
+    test(
+      'should return the proper message when is a NotFoundFailure',
+      () async {
+        // act
+        final result = mapFailureToMessage(NotFoundFailure());
+
+        // assert
+        expect(result, notFoundFailureMessage);
       },
     );
   });

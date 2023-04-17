@@ -4,7 +4,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
-import 'package:pokedex_app/core/use_cases/use_case.dart';
 import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
@@ -27,7 +26,6 @@ import 'pokemon_bloc_test.mocks.dart';
 
 void main() {
   late MockAddFavoritePokemon mockAddFavoritePokemon;
-  late MockGetFavoritePokemons mockGetFavoritePokemons;
   late MockRemoveFavoritePokemon mockRemoveFavoritePokemon;
   late MockGetConcretePokemon mockGetConcretePokemon;
   late MockInputConverter mockInputConverter;
@@ -35,14 +33,12 @@ void main() {
 
   setUp(() {
     mockAddFavoritePokemon = MockAddFavoritePokemon();
-    mockGetFavoritePokemons = MockGetFavoritePokemons();
     mockRemoveFavoritePokemon = MockRemoveFavoritePokemon();
     mockGetConcretePokemon = MockGetConcretePokemon();
     mockInputConverter = MockInputConverter();
 
     bloc = PokemonBloc(
       addFavoritePokemon: mockAddFavoritePokemon,
-      getFavoritePokemons: mockGetFavoritePokemons,
       removeFavoritePokemon: mockRemoveFavoritePokemon,
       getConcretePokemon: mockGetConcretePokemon,
       inputConverter: mockInputConverter,
@@ -64,8 +60,6 @@ void main() {
     isFavorite: true,
   );
 
-  const tPokemonList = [tPokemon];
-
   test(
     'initial state should be Empty',
     () async {
@@ -73,85 +67,6 @@ void main() {
       expect(bloc.state, Empty());
     },
   );
-
-  group('GetPokemonsFromFavorites', () {
-    test(
-      'should get data from the getFavoritePokemons use case',
-      () async {
-        // arrange
-        when(mockGetFavoritePokemons(any))
-            .thenAnswer((_) async => const Right(tPokemonList));
-
-        // act
-        bloc.add(GetPokemonsFromFavorites());
-        await untilCalled(mockGetFavoritePokemons(any));
-
-        // assert
-        verify(mockGetFavoritePokemons(NoParams()));
-      },
-    );
-
-    test(
-      'should emit [Loading, LoadedFavorites] when data is gotten successfully',
-      () async {
-        // arrange
-        when(mockGetFavoritePokemons(any))
-            .thenAnswer((_) async => const Right(tPokemonList));
-
-        // assert later
-        final expected = [
-          Loading(),
-          const LoadedFavorites(pokemons: tPokemonList),
-        ];
-
-        expectLater(bloc.stream, emitsInOrder(expected));
-
-        // act
-        bloc.add(GetPokemonsFromFavorites());
-      },
-    );
-
-    test(
-      'should emit [Loading, ErrorFavorites] when getting data fails',
-      () async {
-        // arrange
-        when(mockGetFavoritePokemons(any))
-            .thenAnswer((_) async => Left(ServerFailure()));
-
-        // assert later
-        final expected = [
-          Loading(),
-          const Error(message: serverFailureMessage),
-        ];
-
-        expectLater(bloc.stream, emitsInOrder(expected));
-
-        // act
-        bloc.add(GetPokemonsFromFavorites());
-      },
-    );
-
-    test(
-      'should emit [Loading, ErrorFavorites] with a proper message for the error',
-      () async {
-        // arrange
-
-        when(mockGetFavoritePokemons(any))
-            .thenAnswer((_) async => Left(CacheFailure()));
-
-        // assert later
-        final expected = [
-          Loading(),
-          const Error(message: cacheFailureMessage),
-        ];
-
-        expectLater(bloc.stream, emitsInOrder(expected));
-
-        // act
-        bloc.add(GetPokemonsFromFavorites());
-      },
-    );
-  });
 
   group('AddPokemonToFavorites', () {
     test(

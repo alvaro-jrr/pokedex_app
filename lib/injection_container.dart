@@ -14,6 +14,7 @@ import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokem
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -23,12 +24,13 @@ void init() {
   sl.registerFactory(
     () => PokemonBloc(
       addFavoritePokemon: sl(),
-      getFavoritePokemons: sl(),
       removeFavoritePokemon: sl(),
       getConcretePokemon: sl(),
       inputConverter: sl(),
     ),
   );
+
+  sl.registerFactory(() => FavoritesBloc(getFavoritePokemons: sl()));
 
   // Use Cases.
   sl.registerLazySingleton(() => AddFavoritePokemon(sl()));
