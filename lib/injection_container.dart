@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:pokedex_app/core/databases/pokemon_database.dart';
 import 'package:pokedex_app/core/network/network_info.dart';
@@ -57,6 +61,12 @@ void init() {
   );
 
   //* Core.
+  if (Platform.isLinux || Platform.isWindows) {
+    // Initialize FFI
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+
   final database = PokemonDatabase.db;
 
   sl.registerLazySingleton(() => database);

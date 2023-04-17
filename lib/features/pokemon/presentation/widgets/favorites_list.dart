@@ -19,7 +19,6 @@ class FavoritesList extends StatelessWidget {
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
         mainAxisExtent: 200,
-        childAspectRatio: 3 / 4,
       ),
       itemBuilder: (context, index) => GestureDetector(
         child: _FavoriteCard(pokemons[index]),
@@ -53,16 +52,19 @@ class _FavoriteCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          FadeInImage(
-            placeholder: const AssetImage('images/loading.gif'),
-            image: NetworkImage(
-              pokemon.sprites.other.officialArtwork.frontDefault,
+          Expanded(
+            child: FadeInImage(
+              placeholder: const AssetImage('images/loading.gif'),
+              image: NetworkImage(
+                pokemon.sprites.other.officialArtwork.frontDefault,
+              ),
+              imageErrorBuilder: (context, error, stackTrace) => Image.asset(
+                'images/no-image.jpg',
+              ),
+              fit: BoxFit.contain,
             ),
-            imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-              'images/no-image.jpg',
-            ),
-            fit: BoxFit.contain,
           ),
+          const SizedBox(height: 8),
           Text(
             toTitleCase(pokemon.name),
             style: const TextStyle(
