@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/pages/home_page.dart';
+import 'package:pokedex_app/features/pokemon/presentation/pages/pages.dart';
 import 'package:pokedex_app/injection_container.dart' as di;
 
 void main() {
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
         initialRoute: HomePage.routeName,
         routes: {
           HomePage.routeName: (_) => const HomePage(),
+          FavoritesPage.routeName: (_) => const FavoritesPage(),
         },
         theme: ThemeData(
           useMaterial3: true,

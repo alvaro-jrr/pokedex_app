@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/pages/pages.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,10 +21,20 @@ class HomePage extends StatelessWidget {
             title: const Text('Tu Pokédex'),
             backgroundColor: Colors.blue.shade100,
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.list),
-              ),
+              PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    const PopupMenuItem(
+                      value: 0,
+                      child: Text('Lista de Favoritos'),
+                    )
+                  ];
+                },
+                onSelected: (_) => Navigator.pushNamed(
+                  context,
+                  FavoritesPage.routeName,
+                ),
+              )
             ],
           ),
           SliverFillRemaining(
