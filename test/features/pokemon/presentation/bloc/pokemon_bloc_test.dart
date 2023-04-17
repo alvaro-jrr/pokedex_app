@@ -173,7 +173,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, LoadedPokemon] when data is added successfully',
+      'should emit [LoadedPokemon] when data is added successfully',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -181,7 +181,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const LoadedPokemon(pokemon: tPokemon),
         ];
 
@@ -193,7 +192,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, Error] when adding data fails',
+      'should emit [Error] when adding data fails',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -201,7 +200,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const Error(message: serverFailureMessage),
         ];
 
@@ -213,7 +211,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, ErrorFavorites] with a proper message for the error',
+      'should emit [Error] with a proper message for the error',
       () async {
         // arrange
 
@@ -222,7 +220,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const Error(message: cacheFailureMessage),
         ];
 
@@ -256,7 +253,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, LoadedPokemon] when data is removed successfully',
+      'should emit [LoadedPokemon] when data is removed successfully',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -264,7 +261,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const LoadedPokemon(pokemon: tPokemon),
         ];
 
@@ -276,7 +272,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, Error] when removing data fails',
+      'should emit [Error] when removing data fails',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -284,7 +280,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const Error(message: serverFailureMessage),
         ];
 
@@ -296,7 +291,7 @@ void main() {
     );
 
     test(
-      'should emit [LoadingFavorite, Error] with a proper message for the error',
+      'should emit [Error] with a proper message for the error',
       () async {
         // arrange
         when(mockRemoveFavoritePokemon(any))
@@ -304,7 +299,6 @@ void main() {
 
         // assert later
         final expected = [
-          LoadingFavorite(),
           const Error(message: cacheFailureMessage),
         ];
 

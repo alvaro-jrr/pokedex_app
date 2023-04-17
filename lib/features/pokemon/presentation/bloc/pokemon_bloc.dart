@@ -46,8 +46,6 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     });
 
     on<AddPokemonToFavorites>((event, emit) async {
-      emit(LoadingFavorite());
-
       final failureOrPokemon = await addFavoritePokemon(
         AddFavoritePokemonParams(pokemon: event.pokemon),
       );
@@ -59,8 +57,6 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
     });
 
     on<RemovePokemonFromFavorites>((event, emit) async {
-      emit(LoadingFavorite());
-
       final failureOrPokemon = await removeFavoritePokemon(
         RemoveFavoritePokemonParams(id: event.id),
       );
