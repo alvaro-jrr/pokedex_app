@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
 
 class FavoritesList extends StatelessWidget {
   final List<Pokemon> pokemons;
@@ -52,18 +53,7 @@ class _FavoriteCard extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: FadeInImage(
-              placeholder: const AssetImage('images/loading.gif'),
-              image: NetworkImage(
-                pokemon.sprites.other.officialArtwork.frontDefault,
-              ),
-              imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-                'images/no-image.jpg',
-              ),
-              fit: BoxFit.contain,
-            ),
-          ),
+          Expanded(child: PokemonImage(pokemon)),
           const SizedBox(height: 8),
           Text(
             toTitleCase(pokemon.name),

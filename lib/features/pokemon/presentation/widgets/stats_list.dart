@@ -16,6 +16,7 @@ class StatsList extends StatelessWidget {
       width: double.infinity,
       height: 180,
       child: ListView.separated(
+        padding: EdgeInsets.zero,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => _StatItem(pokemonStat: stats[index]),

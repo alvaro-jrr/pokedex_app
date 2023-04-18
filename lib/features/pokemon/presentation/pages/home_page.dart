@@ -30,10 +30,15 @@ class HomePage extends StatelessWidget {
                     )
                   ];
                 },
-                onSelected: (_) => Navigator.pushNamed(
-                  context,
-                  FavoritesPage.routeName,
-                ),
+                onSelected: (_) {
+                  Navigator.pushNamed(
+                    context,
+                    FavoritesPage.routeName,
+                  );
+
+                  // Remove focus on text field when returning to this page.
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
               )
             ],
           ),

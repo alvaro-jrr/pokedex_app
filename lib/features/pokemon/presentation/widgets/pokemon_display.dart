@@ -22,7 +22,11 @@ class PokemonDisplay extends StatelessWidget {
       children: [
         _PokemonHeader(pokemon),
         const SizedBox(height: 24),
-        _PokemonImage(pokemon),
+        PokemonImage(
+          pokemon,
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.30,
+        ),
         const SizedBox(height: 24),
         _PokemonAbout(pokemon),
         const SizedBox(height: 32),
@@ -101,29 +105,6 @@ class _PokemonHeader extends StatelessWidget {
         const SizedBox(height: 8),
         TypesList(types: pokemon.types),
       ],
-    );
-  }
-}
-
-class _PokemonImage extends StatelessWidget {
-  final Pokemon pokemon;
-
-  const _PokemonImage(this.pokemon);
-
-  @override
-  Widget build(BuildContext context) {
-    return FadeInImage(
-      placeholder: const AssetImage('images/loading.gif'),
-      image: NetworkImage(
-        pokemon.sprites.other.officialArtwork.frontDefault,
-      ),
-      imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-        'images/no-image.png',
-      ),
-      alignment: Alignment.center,
-      height: MediaQuery.of(context).size.height * 0.30,
-      width: double.infinity,
-      fit: BoxFit.contain,
     );
   }
 }
