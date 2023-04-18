@@ -63,6 +63,34 @@ void main() {
         expect(result, 'A');
       },
     );
+
+    test(
+      'every word should have the first character in uppercase',
+      () async {
+        // arrange
+        const str = 'test test';
+
+        // act
+        final result = toTitleCase(str);
+
+        // assert
+        expect(result, 'Test Test');
+      },
+    );
+
+    test(
+      'should split the word according to the separator',
+      () async {
+        // arrange
+        const str = 'test-test';
+
+        // act
+        final result = toTitleCase(str, separator: '-');
+
+        // assert
+        expect(result, 'Test-Test');
+      },
+    );
   });
 
   group('mapFailureToMessage', () {

@@ -86,7 +86,7 @@ class _PokemonHeader extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              toTitleCase(pokemon.name),
+              toTitleCase(pokemon.name, separator: '-'),
               style: const TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.w700,

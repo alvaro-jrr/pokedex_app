@@ -8,7 +8,7 @@ class InputConverter {
   }
 
   String toSearchQuery(String str) {
-    final queryComponent = str.toLowerCase().trim();
+    final queryComponent = str.toLowerCase().trim().split(' ').join('-');
 
     return Uri.encodeComponent(queryComponent);
   }

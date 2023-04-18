@@ -25,7 +25,7 @@ class PokemonImage extends StatelessWidget {
         pokemon.sprites.other.officialArtwork.frontDefault,
       ),
       imageErrorBuilder: (context, error, stackTrace) => Image.asset(
-        'images/no-image.jpg',
+        'images/no-image.png',
       ),
       height: height,
       width: width,

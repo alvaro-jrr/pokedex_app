@@ -56,7 +56,7 @@ class _FavoriteCard extends StatelessWidget {
           Expanded(child: PokemonImage(pokemon)),
           const SizedBox(height: 8),
           Text(
-            toTitleCase(pokemon.name),
+            toTitleCase(pokemon.name, separator: '-'),
             style: const TextStyle(
               fontWeight: FontWeight.w500,
             ),

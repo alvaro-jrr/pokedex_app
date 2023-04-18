@@ -34,14 +34,11 @@ class _StatItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statName =
-        pokemonStat.stat.name.split('-').map((e) => toTitleCase(e)).join(' ');
-
     return Row(
       children: [
         Expanded(
           child: Text(
-            statName,
+            toTitleCase(pokemonStat.stat.name, separator: '-'),
             style: TextStyle(
               color: Colors.grey.shade600,
               fontSize: 16,

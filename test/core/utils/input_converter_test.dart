@@ -70,7 +70,7 @@ void main() {
     );
 
     test(
-      'should encode the string for URLs',
+      'should convert spaces into hyphens (-)',
       () async {
         // arrange
         const str = 'test 1';
@@ -79,7 +79,21 @@ void main() {
         final result = inputConverter.toSearchQuery(str);
 
         // assert
-        expect(result, 'test%201');
+        expect(result, 'test-1');
+      },
+    );
+
+    test(
+      'should encode the string for URLs',
+      () async {
+        // arrange
+        const str = 'test:1';
+
+        // act
+        final result = inputConverter.toSearchQuery(str);
+
+        // assert
+        expect(result, 'test%3A1');
       },
     );
   });

@@ -1,13 +1,16 @@
-import 'package:flutter/widgets.dart';
-
 import 'package:pokedex_app/core/error/failures.dart';
 
 import 'constants.dart';
 
-String toTitleCase(String str) {
+String toTitleCase(String str, {String separator = ' '}) {
   if (str.isEmpty) return '';
 
-  return '${str.characters.first.toUpperCase()}${str.substring(1).toLowerCase()}';
+  final words = str.split(separator);
+
+  return words.map((word) {
+    // Uppercase first character.
+    return '${word[0].toUpperCase()}${word.substring(1).toLowerCase()}';
+  }).join(separator);
 }
 
 String mapFailureToMessage(Failure failure) {
