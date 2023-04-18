@@ -1,16 +1,20 @@
-# pokedex_app
+# Pokedex App
 
-A new Flutter project.
+**Pokédex App to search and save Pokémons, built with Flutter.**
 
-## Getting Started
+## Built With 🛠️
 
-This project is a starting point for a Flutter application.
+-   [PokeAPI](https://pokeapi.co/) - Pokemon API.
+-   [http](https://pub.dev/packages/http) - Handle HTTP Requests.
+-   [get_it](https://pub.dev/packages/get_it) - Service Locator.
+-   [bloc](https://pub.dev/packages/bloc) - State Management.
+-   [flutter_bloc](https://pub.dev/packages/flutter_bloc) - Integrate blocs in Flutter.
+-   [internet_connection_checker](https://pub.dev/packages/internet_connection_checker) - Checks the internet connection.
+-   [path_provider](https://pub.dev/packages/path_provider) - Find commonly used locations on filesystem.
+-   [sqflite](https://pub.dev/packages/sqflite) - SQLite plugin.
+-   [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi) - Add sqflite suport to desktop and allow unit testings.
+-   [cached_network_image](https://pub.dev/packages/cached_network_image) - Keep network images in the cache.
 
-A few resources to get you started if this is your first Flutter project:
+## Author ✒️
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+-   [Alvaro Resplandor](https://github.com/alvaro-jrr/)
