@@ -1,6 +1,6 @@
 # Pokedex App
 
-**Pokédex App to search and save Pokémons, built with Flutter.**
+Pokédex App to search and save Pokémons, built with Flutter.
 
 ## Built With 🛠️
 
