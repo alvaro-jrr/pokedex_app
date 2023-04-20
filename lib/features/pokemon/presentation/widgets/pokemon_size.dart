@@ -49,7 +49,7 @@ class _SizeCard extends StatelessWidget {
     return Card(
       margin: EdgeInsets.zero,
       elevation: 0,
-      color: Colors.grey.shade100,
+      color: Theme.of(context).primaryColor.withOpacity(0.05),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(

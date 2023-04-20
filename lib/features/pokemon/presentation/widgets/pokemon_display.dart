@@ -77,6 +77,8 @@ class _PokemonHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
@@ -85,18 +87,18 @@ class _PokemonHeader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              toTitleCase(pokemon.name, separator: '-'),
-              style: const TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w700,
+            Expanded(
+              child: Text(
+                toTitleCase(pokemon.name, separator: '-'),
+                style: textTheme.headlineLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
+            const SizedBox(width: 8),
             Text(
               '#${pokemon.id}',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+              style: textTheme.titleSmall?.copyWith(
                 color: Colors.grey.shade600,
               ),
             ),

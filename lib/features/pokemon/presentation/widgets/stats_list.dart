@@ -47,8 +47,11 @@ class _StatItem extends StatelessWidget {
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
+        const SizedBox(width: 8),
         SizedBox(
           width: 48,
           child: Text(
@@ -59,6 +62,7 @@ class _StatItem extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(width: 8),
         Expanded(child: _StatIndicator(pokemonStat.baseStat)),
       ],
     );

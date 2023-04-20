@@ -26,6 +26,9 @@ class PokemonImage extends StatelessWidget {
       ),
       imageErrorBuilder: (context, error, stackTrace) => Image.asset(
         'images/no-image.png',
+        height: height,
+        width: width,
+        fit: BoxFit.contain,
       ),
       height: height,
       width: width,
