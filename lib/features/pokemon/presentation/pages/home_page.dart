@@ -19,7 +19,6 @@ class HomePage extends StatelessWidget {
         slivers: [
           SliverAppBar.large(
             title: const Text('Tu Pokédex'),
-            backgroundColor: Colors.blue.shade100,
             actions: [
               PopupMenuButton(
                 itemBuilder: (context) {

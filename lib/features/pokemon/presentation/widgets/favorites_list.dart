@@ -19,7 +19,7 @@ class FavoritesList extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        mainAxisExtent: 200,
+        mainAxisExtent: 220,
       ),
       itemBuilder: (context, index) => GestureDetector(
         child: _FavoriteCard(pokemons[index]),
@@ -44,24 +44,32 @@ class _FavoriteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(child: PokemonImage(pokemon)),
-          const SizedBox(height: 8),
-          Text(
-            toTitleCase(pokemon.name, separator: '-'),
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
+    return Card(
+      margin: EdgeInsets.zero,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: SizedBox.expand(
+                child: PokemonImage(pokemon),
+              ),
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              toTitleCase(
+                pokemon.name,
+                separator: '-',
+              ),
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text('#${pokemon.id}')
+          ],
+        ),
       ),
     );
   }

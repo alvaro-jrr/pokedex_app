@@ -15,7 +15,6 @@ class TypesList extends StatelessWidget {
       height: 32,
       width: double.infinity,
       child: ListView.separated(
-        shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => _TypeItem(types[index].type),
         separatorBuilder: (context, index) => const SizedBox(width: 8),
@@ -32,18 +31,20 @@ class _TypeItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primaryColor = Theme.of(context).primaryColor;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       alignment: Alignment.center,
       decoration: ShapeDecoration(
-        color: Colors.blue.shade50,
+        color: primaryColor.withOpacity(0.05),
         shape: const StadiumBorder(),
       ),
       child: Text(
         toTitleCase(type.name),
-        style: const TextStyle(
+        style: TextStyle(
           fontWeight: FontWeight.w500,
-          color: Colors.blue,
+          color: primaryColor,
         ),
       ),
     );

@@ -19,7 +19,6 @@ class FavoritesPage extends StatelessWidget {
       child: Scaffold(
           appBar: AppBar(
             title: const Text('Favoritos'),
-            backgroundColor: Colors.blue.shade100,
           ),
           body: Padding(
             padding: const EdgeInsets.all(24),

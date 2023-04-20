@@ -38,7 +38,10 @@ class _StatItem extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            toTitleCase(pokemonStat.stat.name, separator: '-'),
+            toTitleCase(pokemonStat.stat.name, separator: '-').replaceAll(
+              '-',
+              ' ',
+            ),
             style: TextStyle(
               color: Colors.grey.shade600,
               fontSize: 16,
@@ -56,14 +59,14 @@ class _StatItem extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(child: _StatChart(pokemonStat.baseStat)),
+        Expanded(child: _StatIndicator(pokemonStat.baseStat)),
       ],
     );
   }
 }
 
-class _StatChart extends StatelessWidget {
-  const _StatChart(this.baseStat);
+class _StatIndicator extends StatelessWidget {
+  const _StatIndicator(this.baseStat);
 
   final int baseStat;
 

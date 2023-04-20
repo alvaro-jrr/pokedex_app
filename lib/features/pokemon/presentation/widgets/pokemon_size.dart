@@ -46,23 +46,24 @@ class _SizeCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final description = type == null ? '$size' : '$size $type';
 
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
+    return Card(
+      margin: EdgeInsets.zero,
+      elevation: 0,
+      color: Colors.grey.shade100,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(description),
-        ],
+            const SizedBox(height: 4),
+            Text(description),
+          ],
+        ),
       ),
     );
   }
