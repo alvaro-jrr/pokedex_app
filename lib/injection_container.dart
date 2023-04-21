@@ -34,7 +34,12 @@ void init() {
     ),
   );
 
-  sl.registerFactory(() => FavoritesBloc(getFavoritePokemons: sl()));
+  sl.registerFactory(
+    () => FavoritesBloc(
+      getFavoritePokemons: sl(),
+      removeFavoritePokemon: sl(),
+    ),
+  );
 
   // Use Cases.
   sl.registerLazySingleton(() => AddFavoritePokemon(sl()));

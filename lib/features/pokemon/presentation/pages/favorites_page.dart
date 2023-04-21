@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
@@ -30,6 +31,11 @@ class FavoritesPage extends StatelessWidget {
 
                 if (state is LoadedFavorites) {
                   final pokemons = state.pokemons;
+                  final removedPokemon = state.lastRemovedPokemon;
+
+                  if (removedPokemon != null) {
+                    updateHomePokemon(context, removedPokemon);
+                  }
 
                   if (pokemons.isEmpty) {
                     return const MessageDisplay(
@@ -54,5 +60,19 @@ class FavoritesPage extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  /// Updates the [Pokemon] shown in home in case it was removed from favorites.
+  void updateHomePokemon(BuildContext context, Pokemon pokemon) {
+    final pokemonState = BlocProvider.of<PokemonBloc>(context).state;
+    final homePokemon =
+        pokemonState is LoadedPokemon ? pokemonState.pokemon : null;
+
+    // Update the pokemon.
+    if (homePokemon != null && homePokemon.id == pokemon.id) {
+      BlocProvider.of<PokemonBloc>(context).add(
+        SetConcretePokemon(pokemon),
+      );
+    }
   }
 }

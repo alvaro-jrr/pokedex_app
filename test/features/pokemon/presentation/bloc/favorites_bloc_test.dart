@@ -10,19 +10,29 @@ import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprit
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
+import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
 
-@GenerateNiceMocks([MockSpec<GetFavoritePokemons>()])
+@GenerateNiceMocks([
+  MockSpec<GetFavoritePokemons>(),
+  MockSpec<RemoveFavoritePokemon>(),
+])
 import 'favorites_bloc_test.mocks.dart';
 
 void main() {
   late MockGetFavoritePokemons mockGetFavoritePokemons;
+  late MockRemoveFavoritePokemon mockRemoveFavoritePokemon;
   late FavoritesBloc bloc;
 
   setUp(() {
     mockGetFavoritePokemons = MockGetFavoritePokemons();
-    bloc = FavoritesBloc(getFavoritePokemons: mockGetFavoritePokemons);
+    mockRemoveFavoritePokemon = MockRemoveFavoritePokemon();
+
+    bloc = FavoritesBloc(
+      getFavoritePokemons: mockGetFavoritePokemons,
+      removeFavoritePokemon: mockRemoveFavoritePokemon,
+    );
   });
 
   const tPokemon = Pokemon(
@@ -117,6 +127,109 @@ void main() {
 
         // act
         bloc.add(const GetPokemonsFromFavorites());
+      },
+    );
+  });
+  group('RemoveFavoriteFromFavorites', () {
+    const tId = 1;
+
+    final tPokemonListUpdated =
+        tPokemonList.where((element) => element.id != tId).toList();
+
+    test(
+      'should remove the pokemon with the use case',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        bloc.add(
+          const RemoveFavoriteFromFavorites(id: tId, pokemons: tPokemonList),
+        );
+        await untilCalled(mockRemoveFavoritePokemon(any));
+
+        // assert
+        verify(mockRemoveFavoritePokemon(
+          const RemoveFavoritePokemonParams(id: tId),
+        ));
+      },
+    );
+
+    test(
+      '''should emit [LoadedFavorites] when data is 
+      removed successfully without the pokemon removed 
+      and set the pokemon as last removed''',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // assert later
+        final expected = [
+          LoadedFavorites(
+            pokemons: tPokemonListUpdated,
+            lastRemovedPokemon: tPokemon,
+          ),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(
+          const RemoveFavoriteFromFavorites(
+            id: tId,
+            pokemons: tPokemonList,
+          ),
+        );
+      },
+    );
+
+    test(
+      'should emit [ErrorFavorites] when removing data fails',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // assert later
+        final expected = [
+          const ErrorFavorites(message: serverFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(
+          const RemoveFavoriteFromFavorites(
+            id: tId,
+            pokemons: tPokemonList,
+          ),
+        );
+      },
+    );
+
+    test(
+      'should emit [ErrorFavorites] with a proper message for the error',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => Left(CacheFailure()));
+
+        // assert later
+        final expected = [
+          const ErrorFavorites(message: cacheFailureMessage),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(
+          const RemoveFavoriteFromFavorites(
+            id: tId,
+            pokemons: tPokemonList,
+          ),
+        );
       },
     );
   });

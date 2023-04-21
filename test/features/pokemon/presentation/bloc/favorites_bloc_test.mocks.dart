@@ -15,6 +15,8 @@ import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_reposit
     as _i2;
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart'
     as _i4;
+import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart'
+    as _i9;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -92,4 +94,49 @@ class MockGetFavoritePokemons extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, List<_i7.Pokemon>>>);
+}
+
+/// A class which mocks [RemoveFavoritePokemon].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockRemoveFavoritePokemon extends _i1.Mock
+    implements _i9.RemoveFavoritePokemon {
+  @override
+  _i2.PokemonRepository get repository => (super.noSuchMethod(
+        Invocation.getter(#repository),
+        returnValue: _FakePokemonRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+        returnValueForMissingStub: _FakePokemonRepository_0(
+          this,
+          Invocation.getter(#repository),
+        ),
+      ) as _i2.PokemonRepository);
+  @override
+  _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>> call(
+          _i9.RemoveFavoritePokemonParams? params) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #call,
+          [params],
+        ),
+        returnValue: _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>.value(
+            _FakeEither_1<_i6.Failure, _i7.Pokemon>(
+          this,
+          Invocation.method(
+            #call,
+            [params],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>.value(
+                _FakeEither_1<_i6.Failure, _i7.Pokemon>(
+          this,
+          Invocation.method(
+            #call,
+            [params],
+          ),
+        )),
+      ) as _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>);
 }

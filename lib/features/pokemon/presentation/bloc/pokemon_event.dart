@@ -33,3 +33,12 @@ class RemovePokemonFromFavorites extends PokemonEvent {
   @override
   List<Object> get props => [id];
 }
+
+class SetConcretePokemon extends PokemonEvent {
+  final Pokemon pokemon;
+
+  const SetConcretePokemon(this.pokemon);
+
+  @override
+  List<Object> get props => [pokemon];
+}

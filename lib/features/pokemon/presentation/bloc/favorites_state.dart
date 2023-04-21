@@ -13,8 +13,12 @@ class LoadingFavorites extends FavoritesState {}
 
 class LoadedFavorites extends FavoritesState {
   final List<Pokemon> pokemons;
+  final Pokemon? lastRemovedPokemon;
 
-  const LoadedFavorites({required this.pokemons});
+  const LoadedFavorites({
+    required this.pokemons,
+    this.lastRemovedPokemon,
+  });
 
   @override
   List<Object> get props => [pokemons];

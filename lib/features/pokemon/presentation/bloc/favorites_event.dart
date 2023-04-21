@@ -9,7 +9,17 @@ abstract class FavoritesEvent extends Equatable {
 
 class GetPokemonsFromFavorites extends FavoritesEvent {
   const GetPokemonsFromFavorites();
+}
+
+class RemoveFavoriteFromFavorites extends FavoritesEvent {
+  final int id;
+  final List<Pokemon> pokemons;
+
+  const RemoveFavoriteFromFavorites({
+    required this.pokemons,
+    required this.id,
+  });
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [id];
 }

@@ -75,5 +75,9 @@ class PokemonBloc extends Bloc<PokemonEvent, PokemonState> {
         },
       );
     });
+
+    on<SetConcretePokemon>((event, emit) {
+      emit(LoadedPokemon(pokemon: event.pokemon));
+    });
   }
 }

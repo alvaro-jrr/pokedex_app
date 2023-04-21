@@ -380,4 +380,21 @@ void main() {
       },
     );
   });
+
+  group('SetConcretePokemon', () {
+    test(
+      'should emit [LoadedPokemon] with the passed pokemon',
+      () async {
+        // assert later
+        final expected = [
+          const LoadedPokemon(pokemon: tPokemon),
+        ];
+
+        expectLater(bloc.stream, emitsInOrder(expected));
+
+        // act
+        bloc.add(const SetConcretePokemon(tPokemon));
+      },
+    );
+  });
 }

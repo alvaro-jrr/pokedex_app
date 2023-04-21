@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
+import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
 
@@ -19,10 +20,13 @@ class FavoritesList extends StatelessWidget {
         crossAxisCount: 2,
         crossAxisSpacing: 16,
         mainAxisSpacing: 16,
-        mainAxisExtent: 220,
+        mainAxisExtent: 250,
       ),
       itemBuilder: (context, index) => GestureDetector(
-        child: _FavoriteCard(pokemons[index]),
+        child: _FavoriteCard(
+          pokemon: pokemons[index],
+          pokemons: pokemons,
+        ),
         onTap: () {
           // Set the Pokemon as selected.
           BlocProvider.of<PokemonBloc>(context).add(
@@ -39,8 +43,12 @@ class FavoritesList extends StatelessWidget {
 
 class _FavoriteCard extends StatelessWidget {
   final Pokemon pokemon;
+  final List<Pokemon> pokemons;
 
-  const _FavoriteCard(this.pokemon);
+  const _FavoriteCard({
+    required this.pokemon,
+    required this.pokemons,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -49,27 +57,64 @@ class _FavoriteCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
+            IconButton(
+              onPressed: () => addRemoveFavorite(context),
+              icon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 8),
             Expanded(
               child: SizedBox.expand(
                 child: PokemonImage(pokemon),
               ),
             ),
             const SizedBox(height: 8),
-            Text(
-              toTitleCase(
-                pokemon.name,
-                separator: '-',
-              ),
-              style: const TextStyle(
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text('#${pokemon.id}')
+            _PokemonAbout(pokemon),
           ],
         ),
+      ),
+    );
+  }
+
+  void addRemoveFavorite(BuildContext context) {
+    // Remove this pokemon.
+    BlocProvider.of<FavoritesBloc>(context, listen: false).add(
+      RemoveFavoriteFromFavorites(
+        pokemons: pokemons,
+        id: pokemon.id,
+      ),
+    );
+  }
+}
+
+class _PokemonAbout extends StatelessWidget {
+  final Pokemon pokemon;
+
+  const _PokemonAbout(this.pokemon);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            toTitleCase(
+              pokemon.name,
+              separator: '-',
+            ),
+            style: const TextStyle(
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text('#${pokemon.id}'),
+        ],
       ),
     );
   }
