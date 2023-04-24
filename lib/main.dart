@@ -7,9 +7,11 @@ import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/pages/pages.dart';
 import 'package:pokedex_app/injection_container.dart' as di;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   // Inject dependencies.
-  di.init();
+  await di.init();
 
   runApp(const MyApp());
 }

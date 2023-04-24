@@ -1,20 +1,16 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:path/path.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:pokedex_app/features/pokemon/data/models/pokemon_model.dart';
 
 class PokemonDatabase {
-  /// The database instance.
-  static Database? _database;
+  /// The [path] to store this database.
+  final String path;
+  Database? _database;
 
-  static final PokemonDatabase db = PokemonDatabase._();
-
-  PokemonDatabase._();
+  PokemonDatabase({required this.path});
 
   /// The database instance.
   Future<Database> get database async {
@@ -39,10 +35,6 @@ class PokemonDatabase {
 
   /// Initializes the database.
   Future<Database> initDB() async {
-    // Path where is going to be stored the DB
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, 'pokemon.db');
-
     return await openDatabase(
       path,
       version: 1,
