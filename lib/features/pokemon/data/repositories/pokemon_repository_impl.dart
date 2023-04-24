@@ -49,16 +49,6 @@ class PokemonRepositoryImpl implements PokemonRepository {
   }
 
   @override
-  Future<Either<Failure, Pokemon>> getFavoritePokemon(int id) async {
-    try {
-      final pokemon = await localDataSource.getFavoritePokemonById(id);
-      return Right(pokemon);
-    } on CacheException {
-      return Left(CacheFailure());
-    }
-  }
-
-  @override
   Future<Either<Failure, List<Pokemon>>> getFavoritePokemons() async {
     try {
       final pokemon = await localDataSource.getFavoritePokemons();

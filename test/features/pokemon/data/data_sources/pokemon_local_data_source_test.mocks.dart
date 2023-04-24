@@ -37,6 +37,12 @@ class _FakeDatabase_0 extends _i1.SmartFake implements _i2.Database {
 /// See the documentation for Mockito's code generation for more information.
 class MockPokemonDatabase extends _i1.Mock implements _i3.PokemonDatabase {
   @override
+  String get path => (super.noSuchMethod(
+        Invocation.getter(#path),
+        returnValue: '',
+        returnValueForMissingStub: '',
+      ) as String);
+  @override
   _i4.Future<_i2.Database> get database => (super.noSuchMethod(
         Invocation.getter(#database),
         returnValue: _i4.Future<_i2.Database>.value(_FakeDatabase_0(

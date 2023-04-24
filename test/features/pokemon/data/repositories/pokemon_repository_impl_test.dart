@@ -201,42 +201,6 @@ void main() {
     });
   });
 
-  group('getFavoritePokemon', () {
-    const tId = 1;
-
-    test(
-      'should return pokemon when id is present',
-      () async {
-        // arrange
-        when(mockPokemonLocalDataSource.getFavoritePokemonById(any))
-            .thenAnswer((_) async => tPokemonModel);
-
-        // act
-        final result = await repository.getFavoritePokemon(tId);
-
-        // assert
-        verify(mockPokemonLocalDataSource.getFavoritePokemonById(tId));
-        expect(result, const Right(tPokemon));
-      },
-    );
-
-    test(
-      'should return CacheFailure when pokemon id is not found',
-      () async {
-        // arrange
-        when(mockPokemonLocalDataSource.getFavoritePokemonById(any))
-            .thenThrow(CacheException());
-
-        // act
-        final result = await repository.getFavoritePokemon(tId);
-
-        // assert
-        verify(mockPokemonLocalDataSource.getFavoritePokemonById(tId));
-        expect(result, Left(CacheFailure()));
-      },
-    );
-  });
-
   group('getFavoritePokemons', () {
     const tPokemonModels = [tPokemonModel];
     const List<Pokemon> tPokemons = tPokemonModels;
