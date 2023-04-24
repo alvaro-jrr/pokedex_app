@@ -30,7 +30,7 @@ class FavoritesList extends StatelessWidget {
         onTap: () {
           // Set the Pokemon as selected.
           BlocProvider.of<PokemonBloc>(context).add(
-            GetPokemonForConcreteQuery(pokemons[index].name),
+            SetConcretePokemon(pokemons[index]),
           );
 
           Navigator.pop(context);
