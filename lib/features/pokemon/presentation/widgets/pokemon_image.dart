@@ -23,6 +23,7 @@ class PokemonImage extends StatelessWidget {
       placeholder: const AssetImage('images/loading.gif'),
       image: CachedNetworkImageProvider(
         pokemon.sprites.other.officialArtwork.frontDefault,
+        cacheKey: '${pokemon.id}',
       ),
       imageErrorBuilder: (context, error, stackTrace) => Image.asset(
         'images/no-image.png',
