@@ -15,32 +15,32 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: const Text('Tu Pokédex'),
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (context) {
+              return [
+                const PopupMenuItem(
+                  value: 0,
+                  child: Text('Lista de Favoritos'),
+                )
+              ];
+            },
+            onSelected: (_) {
+              Navigator.pushNamed(
+                context,
+                FavoritesPage.routeName,
+              );
+
+              // Remove focus on text field when returning to this page.
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+          ),
+        ],
+      ),
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.large(
-            title: const Text('Tu Pokédex'),
-            actions: [
-              PopupMenuButton(
-                itemBuilder: (context) {
-                  return [
-                    const PopupMenuItem(
-                      value: 0,
-                      child: Text('Lista de Favoritos'),
-                    )
-                  ];
-                },
-                onSelected: (_) {
-                  Navigator.pushNamed(
-                    context,
-                    FavoritesPage.routeName,
-                  );
-
-                  // Remove focus on text field when returning to this page.
-                  FocusManager.instance.primaryFocus?.unfocus();
-                },
-              )
-            ],
-          ),
           SliverFillRemaining(
             hasScrollBody: false,
             child: Padding(
