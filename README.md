@@ -15,6 +15,14 @@ Pokédex App to search and save Pokémons, built with Flutter.
 -   [sqflite_common_ffi](https://pub.dev/packages/sqflite_common_ffi) - Add sqflite suport to desktop and allow unit testings.
 -   [cached_network_image](https://pub.dev/packages/cached_network_image) - Keep network images in the cache.
 
+## Screenshots 📷
+
+![Home page](/screenshots/home_page.png)
+
+![Pokemon displayed on home page](/screenshots/pokemon_display.png)
+
+![Favorites page](/screenshots/favorites_page.png)
+
 ## Author ✒️
 
 -   [Alvaro Resplandor](https://github.com/alvaro-jrr/)
