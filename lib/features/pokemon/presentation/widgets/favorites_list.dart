@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/favorites_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/pokemon_bloc.dart';
 
 class FavoritesList extends StatelessWidget {
   final List<Pokemon> pokemons;

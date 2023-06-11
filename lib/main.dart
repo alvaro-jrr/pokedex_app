@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/core/themes/theme.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/pages/pages.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/pages/pages.dart';
 import 'package:pokedex_app/injection_container.dart' as di;
 
 void main() async {

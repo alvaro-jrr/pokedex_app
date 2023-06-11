@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
 
 class PokemonDisplay extends StatelessWidget {
   final Pokemon pokemon;

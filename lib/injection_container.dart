@@ -19,8 +19,8 @@ import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokem
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_concrete_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/favorites_bloc.dart';
 
 final sl = GetIt.instance;
 

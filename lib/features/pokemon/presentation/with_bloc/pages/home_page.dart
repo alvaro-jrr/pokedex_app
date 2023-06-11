@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/pages/pages.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/pages/pages.dart';
 
 class HomePage extends StatelessWidget {
   static const String routeName = 'home';

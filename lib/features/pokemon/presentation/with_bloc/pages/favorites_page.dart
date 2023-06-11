@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/widgets/widgets.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/favorites_bloc.dart';
 import 'package:pokedex_app/injection_container.dart' as di;
 
 class FavoritesPage extends StatelessWidget {
