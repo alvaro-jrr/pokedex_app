@@ -11,8 +11,8 @@ import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokemons.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/favorites_bloc.dart';
-import 'package:pokedex_app/features/pokemon/presentation/bloc/pokemon_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/favorites_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/pokemon_bloc.dart';
 
 @GenerateNiceMocks([
   MockSpec<GetFavoritePokemons>(),
