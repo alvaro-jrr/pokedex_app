@@ -81,9 +81,21 @@ void main() {
         expect(pokemonsNotifier.currentPokemon, null);
       },
     );
+
+    test(
+      'favoritePokemons should be empty',
+      () async {
+        expect(pokemonsNotifier.favoritePokemons.isEmpty, true);
+      },
+    );
   });
 
   group('addPokemon', () {
+    void setUpAddPokemonSuccessful() {
+      when(mockAddFavoritePokemon(any))
+          .thenAnswer((_) async => const Right(tFavoritePokemon));
+    }
+
     test(
       'should add the pokemon with the use case',
       () async {
@@ -101,26 +113,55 @@ void main() {
       },
     );
 
-    test(
-      '''should set the current pokemon as favorite and error 
-      must be empty when data is added successfully''',
-      () async {
-        // arrange
-        when(mockAddFavoritePokemon(any))
-            .thenAnswer((_) async => const Right(tFavoritePokemon));
+    group('added pokemon successfully', () {
+      test(
+        'should set the current pokemon as favorite',
+        () async {
+          // arrange
+          setUpAddPokemonSuccessful();
 
-        // act
-        await pokemonsNotifier.addPokemon(tPokemon);
+          // act
+          await pokemonsNotifier.addPokemon(tPokemon);
 
-        // assert
-        expect(
-          pokemonsNotifier.currentPokemon,
-          tFavoritePokemon,
-        );
+          // assert
+          expect(
+            pokemonsNotifier.currentPokemon,
+            tFavoritePokemon,
+          );
+        },
+      );
 
-        expect(pokemonsNotifier.error.isEmpty, true);
-      },
-    );
+      test(
+        'should be empty the error message',
+        () async {
+          // arrange
+          setUpAddPokemonSuccessful();
+
+          // act
+          await pokemonsNotifier.addPokemon(tPokemon);
+
+          // assert
+          expect(pokemonsNotifier.error.isEmpty, true);
+        },
+      );
+
+      test(
+        'should be added to favoritesPokemon list',
+        () async {
+          // arrange
+          setUpAddPokemonSuccessful();
+
+          // act
+          await pokemonsNotifier.addPokemon(tPokemon);
+
+          // assert
+          expect(
+            pokemonsNotifier.favoritePokemons.contains(tFavoritePokemon),
+            true,
+          );
+        },
+      );
+    });
 
     test(
       'should set the error message when adding data fails',
@@ -139,6 +180,11 @@ void main() {
   });
 
   group('removePokemon', () {
+    void setUpRemovePokemonSuccess() {
+      when(mockRemoveFavoritePokemon(any))
+          .thenAnswer((_) async => const Right(tPokemon));
+    }
+
     test(
       'should remove the pokemon with the use case',
       () async {
@@ -156,26 +202,55 @@ void main() {
       },
     );
 
-    test(
-      '''should update the current pokemon and error must be 
-      empty when data is removed successfully''',
-      () async {
-        // arrange
-        when(mockRemoveFavoritePokemon(any))
-            .thenAnswer((_) async => const Right(tPokemon));
+    group('removed pokemon successfully', () {
+      test(
+        'should update the current pokemon',
+        () async {
+          // arrange
+          setUpRemovePokemonSuccess();
 
-        // act
-        await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
+          // act
+          await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
 
-        // assert
-        expect(
-          pokemonsNotifier.currentPokemon,
-          tPokemon,
-        );
+          // assert
+          expect(
+            pokemonsNotifier.currentPokemon,
+            tPokemon,
+          );
+        },
+      );
 
-        expect(pokemonsNotifier.error.isEmpty, true);
-      },
-    );
+      test(
+        'should be empty the error message',
+        () async {
+          // arrange
+          setUpRemovePokemonSuccess();
+
+          // act
+          await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
+
+          // assert
+          expect(pokemonsNotifier.error.isEmpty, true);
+        },
+      );
+
+      test(
+        'should be removed from favoritesPokemon list',
+        () async {
+          // arrange
+          setUpRemovePokemonSuccess();
+
+          // act
+          await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
+
+          // assert
+          expect(
+            pokemonsNotifier.favoritePokemons.contains(tFavoritePokemon),
+            false,
+          );
+        },
+      );
+    });
 
     test(
       'should set the error message when adding data fails',
