@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'package:dartz/dartz.dart';
+
+import 'package:pokedex_app/core/error/failures.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
@@ -35,9 +38,26 @@ class PokemonsNotifier with ChangeNotifier {
       AddFavoritePokemonParams(pokemon: pokemon),
     );
 
+    _updateErrorOrPokemon(failureOrPokemon);
+  }
+
+  /// Removes the pokemon with [id] in the favorites list.
+  Future<void> removePokemon(int id) async {
+    final failureOrPokemon = await removeFavoritePokemon(
+      RemoveFavoritePokemonParams(id: id),
+    );
+
+    _updateErrorOrPokemon(failureOrPokemon);
+  }
+
+  /// Updates the [error] or [currentPokemon] value with the [failureOrPokemon].
+  void _updateErrorOrPokemon(Either<Failure, Pokemon> failureOrPokemon) {
     failureOrPokemon.fold(
       (failure) => error = mapFailureToMessage(failure),
-      (pokemon) => currentPokemon = pokemon,
+      (pokemon) {
+        currentPokemon = pokemon;
+        error = '';
+      },
     );
 
     notifyListeners();

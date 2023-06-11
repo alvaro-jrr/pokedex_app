@@ -102,7 +102,8 @@ void main() {
     );
 
     test(
-      'should set the current pokemon as favorite when data is added successfully',
+      '''should set the current pokemon as favorite and error 
+      must be empty when data is added successfully''',
       () async {
         // arrange
         when(mockAddFavoritePokemon(any))
@@ -116,6 +117,8 @@ void main() {
           pokemonsNotifier.currentPokemon,
           tFavoritePokemon,
         );
+
+        expect(pokemonsNotifier.error.isEmpty, true);
       },
     );
 
@@ -128,6 +131,61 @@ void main() {
 
         // act
         await pokemonsNotifier.addPokemon(tPokemon);
+
+        // assert
+        expect(pokemonsNotifier.error, mapFailureToMessage(ServerFailure()));
+      },
+    );
+  });
+
+  group('removePokemon', () {
+    test(
+      'should remove the pokemon with the use case',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tFavoritePokemon));
+
+        // act
+        await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
+
+        // assert
+        verify(mockRemoveFavoritePokemon(
+          RemoveFavoritePokemonParams(id: tFavoritePokemon.id),
+        ));
+      },
+    );
+
+    test(
+      '''should update the current pokemon and error must be 
+      empty when data is removed successfully''',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
+
+        // assert
+        expect(
+          pokemonsNotifier.currentPokemon,
+          tPokemon,
+        );
+
+        expect(pokemonsNotifier.error.isEmpty, true);
+      },
+    );
+
+    test(
+      'should set the error message when adding data fails',
+      () async {
+        // arrange
+        when(mockRemoveFavoritePokemon(any))
+            .thenAnswer((_) async => Left(ServerFailure()));
+
+        // act
+        await pokemonsNotifier.removePokemon(tFavoritePokemon.id);
 
         // assert
         expect(pokemonsNotifier.error, mapFailureToMessage(ServerFailure()));
