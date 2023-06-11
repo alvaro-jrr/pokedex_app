@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
+import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
 import 'package:pokedex_app/features/pokemon/domain/use_cases/add_favorite_pokemon.dart';
@@ -18,12 +19,14 @@ class PokemonsNotifier with ChangeNotifier {
   final GetConcretePokemon getConcretePokemon;
   final GetFavoritePokemons getFavoritePokemons;
   final RemoveFavoritePokemon removeFavoritePokemon;
+  final InputConverter inputConverter;
 
   PokemonsNotifier({
     required this.addFavoritePokemon,
     required this.getConcretePokemon,
     required this.getFavoritePokemons,
     required this.removeFavoritePokemon,
+    required this.inputConverter,
   });
 
   /// The favorite pokemons.
@@ -67,6 +70,25 @@ class PokemonsNotifier with ChangeNotifier {
         if (index != -1) _favoritePokemons.removeAt(index);
       },
     );
+  }
+
+  Future<void> getPokemon(String query) async {
+    final failureOrString = inputConverter.nonEmptyString(query);
+
+    await failureOrString.fold(
+      (failure) async => error = mapFailureToMessage(failure),
+      (str) async {
+        final query = inputConverter.toSearchQuery(str);
+
+        final failureOrPokemon = await getConcretePokemon(
+          GetConcretePokemonParams(query: query),
+        );
+
+        _updateErrorOrPokemon(failureOrPokemon);
+      },
+    );
+
+    notifyListeners();
   }
 
   /// Updates the [error] or [currentPokemon] value with the [failureOrPokemon].

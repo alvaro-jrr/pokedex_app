@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
+import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/other_pokemon_sprites.dart';
@@ -20,6 +21,7 @@ import 'package:pokedex_app/features/pokemon/presentation/with_provider/notifier
   MockSpec<GetFavoritePokemons>(),
   MockSpec<GetConcretePokemon>(),
   MockSpec<RemoveFavoritePokemon>(),
+  MockSpec<InputConverter>()
 ])
 import 'pokemon_notifier_test.mocks.dart';
 
@@ -28,6 +30,7 @@ void main() {
   late MockRemoveFavoritePokemon mockRemoveFavoritePokemon;
   late MockAddFavoritePokemon mockAddFavoritePokemon;
   late MockGetConcretePokemon mockGetConcretePokemon;
+  late MockInputConverter mockInputConverter;
   late PokemonsNotifier pokemonsNotifier;
 
   setUp(() {
@@ -35,12 +38,14 @@ void main() {
     mockRemoveFavoritePokemon = MockRemoveFavoritePokemon();
     mockGetConcretePokemon = MockGetConcretePokemon();
     mockGetFavoritePokemons = MockGetFavoritePokemons();
+    mockInputConverter = MockInputConverter();
 
     pokemonsNotifier = PokemonsNotifier(
       addFavoritePokemon: mockAddFavoritePokemon,
       getConcretePokemon: mockGetConcretePokemon,
       getFavoritePokemons: mockGetFavoritePokemons,
       removeFavoritePokemon: mockRemoveFavoritePokemon,
+      inputConverter: mockInputConverter,
     );
   });
 
@@ -266,5 +271,138 @@ void main() {
         expect(pokemonsNotifier.error, mapFailureToMessage(ServerFailure()));
       },
     );
+  });
+
+  group('getPokemon', () {
+    const tQuery = 'Test';
+
+    void setUpMockInputConverterSuccess() {
+      when(mockInputConverter.nonEmptyString(any))
+          .thenAnswer((_) => const Right(tQuery));
+    }
+
+    void setUpSucessfullCall() {
+      setUpMockInputConverterSuccess();
+
+      when(mockInputConverter.toSearchQuery(any)).thenReturn(tQuery);
+
+      when(mockGetConcretePokemon(any))
+          .thenAnswer((_) async => const Right(tPokemon));
+    }
+
+    test(
+      'should call InputConverter to validate the query',
+      () async {
+        // arrange
+        setUpMockInputConverterSuccess();
+
+        when(mockGetConcretePokemon(any))
+            .thenAnswer((_) async => const Right(tPokemon));
+
+        // act
+        await pokemonsNotifier.getPokemon(tQuery);
+
+        // assert
+        verify(mockInputConverter.nonEmptyString(tQuery));
+      },
+    );
+
+    test(
+      'should set the error message when input is invalid',
+      () async {
+        // arrange
+        when(mockInputConverter.nonEmptyString(any))
+            .thenAnswer((_) => Left(InvalidInputFailure()));
+
+        // act
+        await pokemonsNotifier.getPokemon(tQuery);
+
+        // assert
+        expect(pokemonsNotifier.error.isNotEmpty, true);
+      },
+    );
+
+    test(
+      'should convert the string with toSearchQuery method',
+      () async {
+        // arrange
+        setUpSucessfullCall();
+
+        // act
+        await pokemonsNotifier.getPokemon(tQuery);
+
+        // assert
+        verify(mockInputConverter.toSearchQuery(tQuery));
+      },
+    );
+
+    test(
+      'should get data from the concrete use case',
+      () async {
+        // arrange
+        setUpSucessfullCall();
+
+        // act
+        await pokemonsNotifier.getPokemon(tQuery);
+
+        // assert
+        verify(
+          mockGetConcretePokemon(
+            const GetConcretePokemonParams(query: tQuery),
+          ),
+        );
+      },
+    );
+
+    group('got concrete pokemon successfuly', () {
+      test(
+        'should set as current pokemon',
+        () async {
+          // arrange
+          setUpSucessfullCall();
+
+          // act
+          await pokemonsNotifier.getPokemon(tQuery);
+
+          // assert
+          expect(pokemonsNotifier.currentPokemon, tPokemon);
+        },
+      );
+
+      test(
+        'should be empty the error message',
+        () async {
+          // arrange
+          setUpSucessfullCall();
+
+          // act
+          await pokemonsNotifier.getPokemon(tQuery);
+
+          // assert
+          expect(pokemonsNotifier.error.isEmpty, true);
+        },
+      );
+    });
+
+    group('getting pokemon fails', () {
+      final tFailure = ServerFailure();
+
+      test(
+        'should set the error message',
+        () async {
+          // arrange
+          setUpMockInputConverterSuccess();
+
+          when(mockGetConcretePokemon(any))
+              .thenAnswer((_) async => Left(tFailure));
+
+          // act
+          await pokemonsNotifier.getPokemon(tQuery);
+
+          // assert
+          expect(pokemonsNotifier.error, mapFailureToMessage(tFailure));
+        },
+      );
+    });
   });
 }

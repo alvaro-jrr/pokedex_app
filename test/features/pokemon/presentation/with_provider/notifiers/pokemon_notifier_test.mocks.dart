@@ -9,6 +9,7 @@ import 'package:dartz/dartz.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:pokedex_app/core/error/failures.dart' as _i6;
 import 'package:pokedex_app/core/use_cases/use_case.dart' as _i9;
+import 'package:pokedex_app/core/utils/input_converter.dart' as _i12;
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart'
     as _i7;
 import 'package:pokedex_app/features/pokemon/domain/repositories/pokemon_repository.dart'
@@ -233,4 +234,41 @@ class MockRemoveFavoritePokemon extends _i1.Mock
           ),
         )),
       ) as _i5.Future<_i3.Either<_i6.Failure, _i7.Pokemon>>);
+}
+
+/// A class which mocks [InputConverter].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockInputConverter extends _i1.Mock implements _i12.InputConverter {
+  @override
+  _i3.Either<_i6.Failure, String> nonEmptyString(String? str) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #nonEmptyString,
+          [str],
+        ),
+        returnValue: _FakeEither_1<_i6.Failure, String>(
+          this,
+          Invocation.method(
+            #nonEmptyString,
+            [str],
+          ),
+        ),
+        returnValueForMissingStub: _FakeEither_1<_i6.Failure, String>(
+          this,
+          Invocation.method(
+            #nonEmptyString,
+            [str],
+          ),
+        ),
+      ) as _i3.Either<_i6.Failure, String>);
+  @override
+  String toSearchQuery(String? str) => (super.noSuchMethod(
+        Invocation.method(
+          #toSearchQuery,
+          [str],
+        ),
+        returnValue: '',
+        returnValueForMissingStub: '',
+      ) as String);
 }
