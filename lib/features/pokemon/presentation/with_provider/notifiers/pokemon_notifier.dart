@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
+import 'package:pokedex_app/core/use_cases/use_case.dart';
 import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/pokemon.dart';
@@ -72,6 +73,7 @@ class PokemonsNotifier with ChangeNotifier {
     );
   }
 
+  /// Gets the pokemon that matches the [query].
   Future<void> getPokemon(String query) async {
     final failureOrString = inputConverter.nonEmptyString(query);
 
@@ -85,6 +87,24 @@ class PokemonsNotifier with ChangeNotifier {
         );
 
         _updateErrorOrPokemon(failureOrPokemon);
+      },
+    );
+
+    notifyListeners();
+  }
+
+  /// Gets the favorites pokemons.
+  Future<void> getFavorites() async {
+    // Use stored favorites.
+    if (favoritePokemons.isNotEmpty) return;
+
+    final failureOrPokemons = await getFavoritePokemons(NoParams());
+
+    failureOrPokemons.fold(
+      (failure) => error = mapFailureToMessage(failure),
+      (pokemons) {
+        _favoritePokemons.addAll(pokemons);
+        error = '';
       },
     );
 

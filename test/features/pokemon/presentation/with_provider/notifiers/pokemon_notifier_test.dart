@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:pokedex_app/core/error/failures.dart';
+import 'package:pokedex_app/core/use_cases/use_case.dart';
 import 'package:pokedex_app/core/utils/input_converter.dart';
 import 'package:pokedex_app/core/utils/utils.dart';
 import 'package:pokedex_app/features/pokemon/domain/entities/official_artwork_sprites.dart';
@@ -78,6 +79,8 @@ void main() {
     ),
     isFavorite: true,
   );
+
+  const tFavorites = [tFavoritePokemon];
 
   group('initial state', () {
     test(
@@ -404,5 +407,71 @@ void main() {
         },
       );
     });
+  });
+
+  group('getFavorites', () {
+    final tFailure = ServerFailure();
+
+    test(
+      'should get the pokemons with the use case',
+      () async {
+        // arrange
+        when(mockGetFavoritePokemons(any))
+            .thenAnswer((_) async => const Right(tFavorites));
+
+        // act
+        await pokemonsNotifier.getFavorites();
+
+        // assert
+        verify(mockGetFavoritePokemons(NoParams()));
+      },
+    );
+
+    group('data gotten successfuly', () {
+      test(
+        'should set pokemons as favorites',
+        () async {
+          // arrange
+          when(mockGetFavoritePokemons(any))
+              .thenAnswer((_) async => const Right(tFavorites));
+
+          // act
+          await pokemonsNotifier.getFavorites();
+
+          // assert
+          expect(pokemonsNotifier.favoritePokemons, tFavorites);
+        },
+      );
+
+      test(
+        'should be empty the error message',
+        () async {
+          // arrange
+          when(mockGetFavoritePokemons(any))
+              .thenAnswer((_) async => const Right(tFavorites));
+
+          // act
+          await pokemonsNotifier.getFavorites();
+
+          // assert
+          expect(pokemonsNotifier.error.isEmpty, true);
+        },
+      );
+    });
+
+    test(
+      'should set the error message when getting data fails',
+      () async {
+        // arrange
+        when(mockGetFavoritePokemons(any))
+            .thenAnswer((_) async => Left(tFailure));
+
+        // act
+        await pokemonsNotifier.getFavorites();
+
+        // assert
+        expect(pokemonsNotifier.error, mapFailureToMessage(tFailure));
+      },
+    );
   });
 }
