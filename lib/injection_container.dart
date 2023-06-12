@@ -21,6 +21,7 @@ import 'package:pokedex_app/features/pokemon/domain/use_cases/get_favorite_pokem
 import 'package:pokedex_app/features/pokemon/domain/use_cases/remove_favorite_pokemon.dart';
 import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/bloc.dart';
 import 'package:pokedex_app/features/pokemon/presentation/with_bloc/bloc/favorites_bloc.dart';
+import 'package:pokedex_app/features/pokemon/presentation/with_provider/notifiers/pokemon_notifier.dart';
 
 final sl = GetIt.instance;
 
@@ -40,6 +41,17 @@ Future<void> init() async {
     () => FavoritesBloc(
       getFavoritePokemons: sl(),
       removeFavoritePokemon: sl(),
+    ),
+  );
+
+  // Provider
+  sl.registerFactory(
+    () => PokemonsNotifier(
+      addFavoritePokemon: sl(),
+      getConcretePokemon: sl(),
+      getFavoritePokemons: sl(),
+      removeFavoritePokemon: sl(),
+      inputConverter: sl(),
     ),
   );
 
